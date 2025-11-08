@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { getSession, getSessionPoints } from '../api';
+import { getSession, getSessionPoints, getRaceCourses } from '../api';
 import { calculateStats } from '../utils';
-import type { Session, TrackPoint } from '../types';
+import type { Session, TrackPoint, RaceCourse } from '../types';
+import RaceMarksOverlay from '../components/RaceMarksOverlay';
+import WindVisualization from '../components/WindVisualization';
+import LaylinesOverlay from '../components/LaylinesOverlay';
 import L from 'leaflet';
 import { format } from 'date-fns';
 
@@ -27,9 +30,17 @@ export default function SessionPage() {
   const [points, setPoints] = useState<TrackPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [raceCourses, setRaceCourses] = useState<RaceCourse[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<RaceCourse | null>(null);
+
+  // Layer visibility toggles
+  const [showRaceMarks, setShowRaceMarks] = useState(true);
+  const [showWind, setShowWind] = useState(true);
+  const [showLaylines, setShowLaylines] = useState(false);
 
   useEffect(() => {
     loadSession();
+    loadRaceCourses();
   }, [id]);
 
   const loadSession = async () => {
@@ -44,6 +55,19 @@ export default function SessionPage() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadRaceCourses = async () => {
+    try {
+      const courses = await getRaceCourses();
+      setRaceCourses(courses);
+      // Auto-select first course if available
+      if (courses.length > 0) {
+        setSelectedCourse(courses[0]);
+      }
+    } catch (err) {
+      console.error('Failed to load race courses:', err);
     }
   };
 
@@ -158,6 +182,60 @@ export default function SessionPage() {
             </div>
           )}
 
+          {/* Tactical Controls */}
+          <div className="glass-dark p-4 rounded-xl">
+            <h3 className="text-lg font-bold mb-3">📊 Tactical Overlays</h3>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => setShowRaceMarks(!showRaceMarks)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  showRaceMarks
+                    ? 'bg-ocean-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                {showRaceMarks ? '✓' : ''} Race Marks
+              </button>
+              <button
+                onClick={() => setShowWind(!showWind)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  showWind
+                    ? 'bg-ocean-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                {showWind ? '✓' : ''} Wind Visualization
+              </button>
+              <button
+                onClick={() => setShowLaylines(!showLaylines)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  showLaylines
+                    ? 'bg-ocean-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                {showLaylines ? '✓' : ''} Laylines
+              </button>
+              {raceCourses.length > 1 && (
+                <select
+                  value={selectedCourse?.id || ''}
+                  onChange={(e) => {
+                    const course = raceCourses.find(c => c.id === Number(e.target.value));
+                    setSelectedCourse(course || null);
+                  }}
+                  className="px-4 py-2 rounded-lg bg-slate-700 text-white"
+                >
+                  <option value="">Select Course</option>
+                  {raceCourses.map(course => (
+                    <option key={course.id} value={course.id}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          </div>
+
           {/* Map */}
           <div className="glass-dark p-4 rounded-xl">
             <h2 className="text-xl font-bold mb-4">GPS Track</h2>
@@ -172,6 +250,8 @@ export default function SessionPage() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 />
                 <Polyline positions={trackCoordinates} color="#0ea5e9" weight={3} />
+
+                {/* Start and End Markers */}
                 {points.length > 0 && (
                   <>
                     <Marker position={[points[0].lat, points[0].lon]}>
@@ -181,6 +261,41 @@ export default function SessionPage() {
                       <Popup>End</Popup>
                     </Marker>
                   </>
+                )}
+
+                {/* Race Marks Overlay */}
+                {showRaceMarks && selectedCourse && (
+                  <RaceMarksOverlay marks={selectedCourse.marks} />
+                )}
+
+                {/* Wind Visualization */}
+                {showWind && points.length > 0 && points.some(p => p.tws && p.twa) && (
+                  <WindVisualization
+                    centerLat={center[0]}
+                    centerLon={center[1]}
+                    windSpeed={points.find(p => p.tws)?.tws || 10}
+                    windDirection={
+                      points.find(p => p.twa && p.cog)
+                        ? (points.find(p => p.twa && p.cog)!.cog + points.find(p => p.twa && p.cog)!.twa!) % 360
+                        : 0
+                    }
+                  />
+                )}
+
+                {/* Laylines Overlay */}
+                {showLaylines && selectedCourse && selectedCourse.marks.length > 0 && points.length > 0 && (
+                  <LaylinesOverlay
+                    currentLat={points[points.length - 1].lat}
+                    currentLon={points[points.length - 1].lon}
+                    markLat={selectedCourse.marks.find(m => m.mark_type === 'windward')?.lat || selectedCourse.marks[0].lat}
+                    markLon={selectedCourse.marks.find(m => m.mark_type === 'windward')?.lon || selectedCourse.marks[0].lon}
+                    windDirection={
+                      points.find(p => p.twa && p.cog)
+                        ? (points.find(p => p.twa && p.cog)!.cog + points.find(p => p.twa && p.cog)!.twa!) % 360
+                        : 0
+                    }
+                    tackingAngle={42}
+                  />
                 )}
               </MapContainer>
             </div>

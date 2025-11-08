@@ -29,3 +29,25 @@ export interface SessionStats {
   maxSpeed: number;
   pointCount: number;
 }
+
+export interface RaceMark {
+  id: number;
+  course_id: number;
+  name: string;
+  lat: number;
+  lon: number;
+  mark_type: string;
+  color: string;
+  sequence: number;
+  shape: string;
+}
+
+export interface RaceCourse {
+  id: number;
+  name: string;
+  description: string | null;
+  created_by: number;
+  created_at: string;
+  config_json: Record<string, any>;
+  marks: RaceMark[];
+}
