@@ -58,7 +58,7 @@ export default function App(){
 
 function Metric({label, value}){
   return (
-    <div style={{background:'#f4f7fb', borderRadius:12, padding:12}}>
+    <div style={{background:'#f4f7fb', borderRadius:12, padding:12, color:'#000'}}>
       <div style={{opacity:0.6}}>{label}</div>
       <div style={{fontSize:24, fontWeight:700}}>{value}</div>
     </div>

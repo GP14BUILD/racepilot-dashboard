@@ -23,3 +23,9 @@
     border: 1px solid rgba(51, 65, 85, 0.5);
   }
 }
+
+/* Force black text on light metric cards */
+div[style*="background:#f4f7fb"],
+div[style*="background: #f4f7fb"] {
+  color: #000 !important;
+}
