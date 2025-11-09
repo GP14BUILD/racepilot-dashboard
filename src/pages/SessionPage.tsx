@@ -4,10 +4,14 @@ import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { getSession, getSessionPoints, getRaceCourses } from '../api';
 import { calculateStats } from '../utils';
-import type { Session, TrackPoint, RaceCourse } from '../types';
+import type { Session, TrackPoint, RaceCourse, Maneuver, PerformanceAnomaly } from '../types';
 import RaceMarksOverlay from '../components/RaceMarksOverlay';
 import WindVisualization from '../components/WindVisualization';
 import LaylinesOverlay from '../components/LaylinesOverlay';
+import ManeuverStatsPanel from '../components/ManeuverStatsPanel';
+import AnomalyPanel from '../components/AnomalyPanel';
+import CoachingPanel from '../components/CoachingPanel';
+import WindPatternPanel from '../components/WindPatternPanel';
 import L from 'leaflet';
 import { format } from 'date-fns';
 
@@ -32,11 +36,15 @@ export default function SessionPage() {
   const [error, setError] = useState<string | null>(null);
   const [raceCourses, setRaceCourses] = useState<RaceCourse[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<RaceCourse | null>(null);
+  const [maneuvers, setManeuvers] = useState<Maneuver[]>([]);
+  const [anomalies, setAnomalies] = useState<PerformanceAnomaly[]>([]);
 
   // Layer visibility toggles
   const [showRaceMarks, setShowRaceMarks] = useState(true);
   const [showWind, setShowWind] = useState(true);
   const [showLaylines, setShowLaylines] = useState(false);
+  const [showManeuvers, setShowManeuvers] = useState(true);
+  const [showAnomalies, setShowAnomalies] = useState(true);
 
   useEffect(() => {
     loadSession();
@@ -47,9 +55,21 @@ export default function SessionPage() {
     try {
       setLoading(true);
       const sessionData = await getSession(Number(id));
-      const pointsData = await getSessionPoints(Number(id));
       setSession(sessionData);
-      setPoints(pointsData);
+
+      // Try to load points, but handle 404 as empty array
+      try {
+        const pointsData = await getSessionPoints(Number(id));
+        setPoints(pointsData);
+      } catch (pointsErr: any) {
+        if (pointsErr?.response?.status === 404) {
+          // Session exists but has no points yet
+          setPoints([]);
+          console.log('Session has no track points yet');
+        } else {
+          throw pointsErr;
+        }
+      }
     } catch (err) {
       setError('Failed to load session');
       console.error(err);
@@ -216,6 +236,26 @@ export default function SessionPage() {
               >
                 {showLaylines ? '✓' : ''} Laylines
               </button>
+              <button
+                onClick={() => setShowManeuvers(!showManeuvers)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  showManeuvers
+                    ? 'bg-ocean-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                {showManeuvers ? '✓' : ''} Tack Markers
+              </button>
+              <button
+                onClick={() => setShowAnomalies(!showAnomalies)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  showAnomalies
+                    ? 'bg-red-600 text-white'
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                }`}
+              >
+                {showAnomalies ? '✓' : ''} Anomalies
+              </button>
               {raceCourses.length > 1 && (
                 <select
                   value={selectedCourse?.id || ''}
@@ -297,9 +337,122 @@ export default function SessionPage() {
                     tackingAngle={42}
                   />
                 )}
+
+                {/* Maneuver Markers */}
+                {showManeuvers && maneuvers.map((maneuver) => (
+                  <Marker
+                    key={`maneuver-${maneuver.id}`}
+                    position={[maneuver.start_lat, maneuver.start_lon]}
+                    icon={L.divIcon({
+                      className: 'maneuver-marker',
+                      html: `<div style="
+                        background: ${maneuver.maneuver_type === 'tack' ? '#3b82f6' : maneuver.maneuver_type === 'gybe' ? '#a855f7' : '#64748b'};
+                        color: white;
+                        border-radius: 50%;
+                        width: 24px;
+                        height: 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 12px;
+                        font-weight: bold;
+                        border: 2px solid white;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                      ">${maneuver.maneuver_type === 'tack' ? 'T' : maneuver.maneuver_type === 'gybe' ? 'G' : 'M'}</div>`,
+                      iconSize: [24, 24],
+                      iconAnchor: [12, 12],
+                    })}
+                  >
+                    <Popup>
+                      <div className="p-2">
+                        <p className="font-bold mb-1">{maneuver.maneuver_type.toUpperCase()}</p>
+                        <p className="text-sm">Score: <span className="font-bold">{maneuver.score_0_100}</span></p>
+                        <p className="text-sm">Time: {maneuver.time_through_sec.toFixed(1)}s</p>
+                        <p className="text-sm">Speed Loss: {maneuver.speed_loss_kn.toFixed(2)} kts</p>
+                        <p className="text-sm">Angle: {maneuver.angle_change_deg.toFixed(0)}°</p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          {format(new Date(maneuver.start_ts), 'HH:mm:ss')}
+                        </p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+
+                {/* Anomaly Markers */}
+                {showAnomalies && anomalies.map((anomaly) => (
+                  <Marker
+                    key={`anomaly-${anomaly.id}`}
+                    position={[anomaly.lat, anomaly.lon]}
+                    icon={L.divIcon({
+                      className: 'anomaly-marker',
+                      html: `<div style="
+                        background: ${anomaly.severity === 'severe' ? '#ef4444' : anomaly.severity === 'moderate' ? '#f97316' : '#facc15'};
+                        color: white;
+                        border-radius: 50%;
+                        width: 28px;
+                        height: 28px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 16px;
+                        font-weight: bold;
+                        border: 2px solid white;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+                      ">⚠</div>`,
+                      iconSize: [28, 28],
+                      iconAnchor: [14, 14],
+                    })}
+                  >
+                    <Popup>
+                      <div className="p-2" style={{ minWidth: '200px' }}>
+                        <p className="font-bold mb-1 text-red-600">
+                          {anomaly.severity.toUpperCase()} ANOMALY
+                        </p>
+                        <p className="text-sm mb-2">
+                          Speed: <span className="font-bold">{anomaly.actual_sog.toFixed(2)} kts</span>
+                          <br />
+                          Expected: {anomaly.expected_sog.toFixed(2)} kts
+                          <br />
+                          Deviation: <span className="text-red-600 font-bold">{anomaly.deviation_kts.toFixed(2)} kts</span>
+                        </p>
+                        <p className="text-sm font-semibold mb-1">Likely Causes:</p>
+                        <ul className="text-xs space-y-1">
+                          {anomaly.possible_causes.map((cause, i) => (
+                            <li key={i}>• {cause}</li>
+                          ))}
+                        </ul>
+                        <p className="text-xs text-slate-500 mt-2">
+                          {format(new Date(anomaly.ts), 'HH:mm:ss')}
+                        </p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
               </MapContainer>
             </div>
           </div>
+
+          {/* Performance Anomalies Panel */}
+          <AnomalyPanel
+            sessionId={Number(id)}
+            onAnomaliesLoaded={setAnomalies}
+          />
+
+          {/* Maneuver Stats Panel */}
+          <ManeuverStatsPanel
+            sessionId={Number(id)}
+            onManeuversLoaded={setManeuvers}
+          />
+
+          {/* AI Coaching Panel */}
+          <CoachingPanel
+            sessionId={Number(id)}
+          />
+
+          {/* Wind Pattern Analysis Panel */}
+          <WindPatternPanel
+            sessionId={Number(id)}
+          />
 
           {/* Speed Chart */}
           <div className="glass-dark p-4 rounded-xl">

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SessionPage from './pages/SessionPage';
+import FleetComparisonPage from './pages/FleetComparisonPage';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/session/:id" element={<SessionPage />} />
+            <Route path="/fleet-comparison" element={<FleetComparisonPage />} />
           </Routes>
         </main>
 

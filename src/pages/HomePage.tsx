@@ -88,6 +88,29 @@ export default function HomePage() {
         </p>
       </div>
 
+      {/* Fleet Comparison Call-to-Action */}
+      {sessions.length > 1 && (
+        <Link
+          to="/fleet-comparison"
+          className="block glass-dark p-6 rounded-xl hover:bg-white/15 transition mb-8 border-2 border-ocean-500/30"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-ocean-500 rounded-lg flex items-center justify-center text-3xl">
+                🗺️
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold mb-1">Fleet Comparison</h2>
+                <p className="text-slate-400">
+                  Compare multiple sessions side-by-side on a single map
+                </p>
+              </div>
+            </div>
+            <div className="text-4xl text-ocean-400">→</div>
+          </div>
+        </Link>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sessions.map((session, index) => (
           <motion.div
