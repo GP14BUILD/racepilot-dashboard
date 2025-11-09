@@ -166,16 +166,16 @@ export default function WindPatternPanel({ sessionId, onShiftsLoaded }: WindPatt
       {pattern ? (
         <>
           {/* Pattern Summary */}
-          <div className={`p-6 rounded-lg border mb-6 ${getPatternColor(pattern.dominant_pattern)}`}>
+          <div className={`p-6 rounded-lg border mb-6 ${getPatternColor(pattern.dominant_pattern || '')}`}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-4">
-                <span className="text-4xl">{getPatternIcon(pattern.dominant_pattern)}</span>
+                <span className="text-4xl">{getPatternIcon(pattern.dominant_pattern || '')}</span>
                 <div>
                   <h3 className="text-2xl font-bold capitalize">
-                    {pattern.dominant_pattern.replace('_', ' ')}
+                    {pattern.dominant_pattern?.replace('_', ' ') || 'Unknown'}
                   </h3>
                   <p className="text-sm opacity-80">
-                    {getPatternDescription(pattern.dominant_pattern)}
+                    {getPatternDescription(pattern.dominant_pattern || '')}
                   </p>
                 </div>
               </div>
@@ -189,15 +189,15 @@ export default function WindPatternPanel({ sessionId, onShiftsLoaded }: WindPatt
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-current/20">
               <div>
                 <p className="text-sm opacity-80 mb-1">Pattern Strength</p>
-                <p className="text-xl font-bold">{Math.round(pattern.pattern_strength * 100)}%</p>
+                <p className="text-xl font-bold">{Math.round((pattern.pattern_strength || 0) * 100)}%</p>
               </div>
               <div>
                 <p className="text-sm opacity-80 mb-1">Total Shifts</p>
-                <p className="text-xl font-bold">{pattern.total_shifts_detected}</p>
+                <p className="text-xl font-bold">{pattern.total_shifts_detected || 0}</p>
               </div>
               <div>
                 <p className="text-sm opacity-80 mb-1">Avg Magnitude</p>
-                <p className="text-xl font-bold">{pattern.avg_shift_magnitude.toFixed(1)}°</p>
+                <p className="text-xl font-bold">{(pattern.avg_shift_magnitude || 0).toFixed(1)}°</p>
               </div>
               {pattern.is_oscillating && pattern.avg_oscillation_period && (
                 <div>
