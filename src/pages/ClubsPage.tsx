@@ -11,6 +11,9 @@ interface Club {
   is_active: boolean;
   created_at: string;
   member_count: number;
+  privacy_level?: string;  // 'public', 'club_only', 'private'
+  share_to_global?: boolean;
+  allow_anonymous_sharing?: boolean;
 }
 
 interface ClubMember {
@@ -42,6 +45,9 @@ export default function ClubsPage() {
     location: '',
     website: '',
     is_active: true,
+    privacy_level: 'club_only',
+    share_to_global: false,
+    allow_anonymous_sharing: true,
   });
 
   const isSuperAdmin = user?.role === 'admin';
@@ -126,6 +132,9 @@ export default function ClubsPage() {
         location: '',
         website: '',
         is_active: true,
+        privacy_level: 'club_only',
+        share_to_global: false,
+        allow_anonymous_sharing: true,
       });
       setShowCreateForm(false);
       loadClubs();
@@ -260,6 +269,58 @@ export default function ClubsPage() {
               </label>
             </div>
 
+            <div style={{...styles.formGroup, marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #e0e0e0'}}>
+              <h3 style={{fontSize: '16px', fontWeight: 'bold', marginBottom: '16px', color: '#333'}}>
+                Privacy Settings
+              </h3>
+
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Privacy Level</label>
+                <select
+                  value={formData.privacy_level}
+                  onChange={(e) => setFormData({...formData, privacy_level: e.target.value})}
+                  style={styles.input}
+                >
+                  <option value="private">Private - Only club members can see data</option>
+                  <option value="club_only">Club Only - Visible in club directory</option>
+                  <option value="public">Public - Visible to everyone</option>
+                </select>
+                <p style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
+                  Controls who can see your club and its data
+                </p>
+              </div>
+
+              <div style={styles.formGroup}>
+                <label style={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    checked={formData.share_to_global}
+                    onChange={(e) => setFormData({...formData, share_to_global: e.target.checked})}
+                  />
+                  <span style={{marginLeft: '8px'}}>Share to Global Platform</span>
+                </label>
+                <p style={{fontSize: '12px', color: '#666', marginTop: '4px', marginLeft: '24px'}}>
+                  Allow your club's data to appear in global leaderboards and comparisons
+                </p>
+              </div>
+
+              {formData.share_to_global && (
+                <div style={styles.formGroup}>
+                  <label style={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      checked={formData.allow_anonymous_sharing}
+                      onChange={(e) => setFormData({...formData, allow_anonymous_sharing: e.target.checked})}
+                    />
+                    <span style={{marginLeft: '8px'}}>Anonymize Global Data</span>
+                  </label>
+                  <p style={{fontSize: '12px', color: '#666', marginTop: '4px', marginLeft: '24px'}}>
+                    Hide member names in global comparisons (show boat class and performance only)
+                  </p>
+                </div>
+              )}
+            </div>
+
             <button type="submit" style={styles.submitButton}>
               Create Club
             </button>
@@ -283,6 +344,35 @@ export default function ClubsPage() {
             </div>
             {club.location && <p style={styles.clubLocation}>📍 {club.location}</p>}
             {club.description && <p style={styles.clubDescription}>{club.description}</p>}
+
+            {/* Privacy indicators */}
+            {isClubAdmin && (
+              <div style={{marginTop: '8px', display: 'flex', gap: '4px', flexWrap: 'wrap'}}>
+                <span style={{
+                  fontSize: '11px',
+                  padding: '2px 8px',
+                  borderRadius: '10px',
+                  backgroundColor: club.privacy_level === 'public' ? '#E8F5E9' : club.privacy_level === 'private' ? '#FFEBEE' : '#FFF3E0',
+                  color: club.privacy_level === 'public' ? '#388E3C' : club.privacy_level === 'private' ? '#C62828' : '#F57C00',
+                  fontWeight: '500'
+                }}>
+                  {club.privacy_level === 'public' ? '🌍 Public' : club.privacy_level === 'private' ? '🔒 Private' : '👥 Club Only'}
+                </span>
+                {club.share_to_global && (
+                  <span style={{
+                    fontSize: '11px',
+                    padding: '2px 8px',
+                    borderRadius: '10px',
+                    backgroundColor: '#E3F2FD',
+                    color: '#1976D2',
+                    fontWeight: '500'
+                  }}>
+                    🌐 Global
+                  </span>
+                )}
+              </div>
+            )}
+
             <div style={styles.clubFooter}>
               <span style={styles.memberCount}>👥 {club.member_count} members</span>
               <span style={club.is_active ? styles.statusActive : styles.statusInactive}>

@@ -4,6 +4,8 @@ import HomePage from './pages/HomePage';
 import SessionPage from './pages/SessionPage';
 import FleetComparisonPage from './pages/FleetComparisonPage';
 import LoginPage from './pages/LoginPage';
+import RaceReplayPage from './pages/RaceReplayPage';
+import ClubsPage from './pages/ClubsPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -86,6 +88,42 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 
           {user && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <nav style={{ display: 'flex', gap: '12px', marginRight: '16px' }}>
+                <Link
+                  to="/"
+                  style={{
+                    padding: '8px 16px',
+                    color: '#e2e8f0',
+                    textDecoration: 'none',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  Dashboard
+                </Link>
+                {(user.role === 'admin' || user.role === 'club_admin') && (
+                  <Link
+                    to="/clubs"
+                    style={{
+                      padding: '8px 16px',
+                      color: '#e2e8f0',
+                      textDecoration: 'none',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    Clubs
+                  </Link>
+                )}
+              </nav>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '14px', fontWeight: '500', color: '#e2e8f0' }}>
                   {user.name}
@@ -154,6 +192,20 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <FleetComparisonPage />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/replay/:id" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <RaceReplayPage />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/clubs" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <ClubsPage />
               </AppLayout>
             </ProtectedRoute>
           } />

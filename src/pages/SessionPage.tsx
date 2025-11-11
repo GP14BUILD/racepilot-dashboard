@@ -149,7 +149,18 @@ export default function SessionPage() {
             <h1 className="text-3xl font-bold mb-2">{session.title}</h1>
             <p className="text-slate-400">Session #{session.id}</p>
           </div>
-          <div className="text-5xl">⛵</div>
+          <div className="flex items-center gap-4">
+            {points.length > 0 && (
+              <Link
+                to={`/replay/${id}`}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg font-semibold transition flex items-center gap-2"
+              >
+                <span>🎬</span>
+                <span>Watch Replay</span>
+              </Link>
+            )}
+            <div className="text-5xl">⛵</div>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
