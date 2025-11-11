@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { getSession, getSessionPoints, getRaceCourses } from '../api';
 import { calculateStats } from '../utils';
+import { calculateVMG } from '../tacticalUtils';
 import type { Session, TrackPoint, RaceCourse, Maneuver, PerformanceAnomaly } from '../types';
 import RaceMarksOverlay from '../components/RaceMarksOverlay';
 import WindVisualization from '../components/WindVisualization';
