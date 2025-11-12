@@ -13,6 +13,7 @@ import ManeuverStatsPanel from '../components/ManeuverStatsPanel';
 import AnomalyPanel from '../components/AnomalyPanel';
 import CoachingPanel from '../components/CoachingPanel';
 import WindPatternPanel from '../components/WindPatternPanel';
+import VideoUpload from '../components/VideoUpload';
 import L from 'leaflet';
 import { format } from 'date-fns';
 
@@ -465,6 +466,9 @@ export default function SessionPage() {
           <WindPatternPanel
             sessionId={Number(id)}
           />
+
+          {/* Video Upload */}
+          <VideoUpload sessionId={Number(id)} />
 
           {/* Speed Chart */}
           <div className="glass-dark p-4 rounded-xl">

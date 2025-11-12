@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
+import VideoPlayer from '../components/VideoPlayer';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -34,6 +35,23 @@ interface Session {
   start_ts: string;
   end_ts?: string;
   user_id: number;
+}
+
+interface Video {
+  id: number;
+  session_id: number;
+  user_id: number;
+  user_name: string;
+  filename: string;
+  file_size: number;
+  duration?: number;
+  thumbnail_url?: string;
+  video_url?: string;
+  offset_seconds: number;
+  title?: string;
+  description?: string;
+  is_public: boolean;
+  created_at: string;
 }
 
 const API_URL = 'https://racepilot-backend-production.up.railway.app';
@@ -72,6 +90,10 @@ export default function RaceReplayPage() {
   const [ghostTrackPoints, setGhostTrackPoints] = useState<TrackPoint[]>([]);
   const [ghostManeuvers, setGhostManeuvers] = useState<Maneuver[]>([]);
 
+  // Video state
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+
   // Replay state
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,6 +106,7 @@ export default function RaceReplayPage() {
       loadSession(parseInt(id));
       loadTrackPoints(parseInt(id));
       loadManeuvers(parseInt(id));
+      loadVideos(parseInt(id));
     }
     if (ghostSessionId) {
       loadGhostSession(parseInt(ghostSessionId));
@@ -243,6 +266,28 @@ export default function RaceReplayPage() {
     }
   };
 
+  const loadVideos = async (sessionId: number) => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/videos/session/${sessionId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setVideos(data);
+        // Auto-select first video if available
+        if (data.length > 0) {
+          setSelectedVideo(data[0]);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load videos:', err);
+    }
+  };
+
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
@@ -296,6 +341,11 @@ export default function RaceReplayPage() {
   });
 
   const progress = (currentIndex / (trackPoints.length - 1)) * 100;
+
+  // Calculate elapsed time for video sync
+  const elapsedSeconds = trackPoints.length > 0
+    ? (new Date(currentPoint.ts).getTime() - new Date(trackPoints[0].ts).getTime()) / 1000
+    : 0;
 
   // Ghost boat calculations
   let ghostCurrentPoint: TrackPoint | null = null;
@@ -376,13 +426,47 @@ export default function RaceReplayPage() {
         </div>
       )}
 
-      {/* Map */}
-      <div style={styles.mapContainer}>
-        <MapContainer
-          center={center}
-          zoom={16}
-          style={{ height: '100%', width: '100%', borderRadius: '12px' }}
-        >
+      {/* Video and Map Container */}
+      <div style={selectedVideo ? styles.dualViewContainer : {}}>
+        {/* Video Player */}
+        {selectedVideo && (
+          <div style={styles.videoContainer}>
+            <VideoPlayer
+              videoUrl={`${API_URL}${selectedVideo.video_url}`}
+              isPlaying={isPlaying}
+              currentTime={elapsedSeconds}
+              offsetSeconds={selectedVideo.offset_seconds}
+              playbackSpeed={playbackSpeed}
+            />
+            {videos.length > 1 && (
+              <div style={styles.videoSelector}>
+                <label style={styles.videoSelectorLabel}>Video:</label>
+                <select
+                  value={selectedVideo.id}
+                  onChange={(e) => {
+                    const video = videos.find(v => v.id === parseInt(e.target.value));
+                    if (video) setSelectedVideo(video);
+                  }}
+                  style={styles.videoSelect}
+                >
+                  {videos.map(video => (
+                    <option key={video.id} value={video.id}>
+                      {video.title || video.filename}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Map */}
+        <div style={selectedVideo ? styles.mapContainerSplit : styles.mapContainer}>
+          <MapContainer
+            center={center}
+            zoom={16}
+            style={{ height: '100%', width: '100%', borderRadius: '12px' }}
+          >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -459,6 +543,7 @@ export default function RaceReplayPage() {
             </Marker>
           ))}
         </MapContainer>
+        </div>
       </div>
 
       {/* Metrics Panel */}
@@ -759,5 +844,49 @@ const styles: Record<string, React.CSSProperties> = {
   ghostBannerStats: {
     fontSize: '16px',
     color: '#666',
+  },
+  dualViewContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '20px',
+    marginBottom: '20px',
+  },
+  videoContainer: {
+    position: 'relative',
+    height: '500px',
+    backgroundColor: '#000',
+    borderRadius: '12px',
+    overflow: 'hidden',
+  },
+  mapContainerSplit: {
+    height: '500px',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+  },
+  videoSelector: {
+    position: 'absolute',
+    top: '16px',
+    right: '16px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: '8px 12px',
+    borderRadius: '8px',
+    zIndex: 1000,
+  },
+  videoSelectorLabel: {
+    color: '#fff',
+    fontSize: '14px',
+    fontWeight: '600',
+  },
+  videoSelect: {
+    padding: '6px 12px',
+    borderRadius: '6px',
+    border: '1px solid rgba(255,255,255,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    color: '#fff',
+    fontSize: '14px',
   },
 };
