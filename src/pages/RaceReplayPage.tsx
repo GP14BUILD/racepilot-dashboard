@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -46,13 +46,31 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// Custom boat icons
+const createBoatIcon = (color: string, isGhost: boolean = false) => {
+  return L.divIcon({
+    className: 'custom-boat-icon',
+    html: `<div style="font-size: 24px; ${isGhost ? 'opacity: 0.7;' : ''}">${isGhost ? '👻' : '⛵'}</div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+  });
+};
+
 export default function RaceReplayPage() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const ghostSessionId = searchParams.get('ghost');
+
   const [session, setSession] = useState<Session | null>(null);
   const [trackPoints, setTrackPoints] = useState<TrackPoint[]>([]);
   const [maneuvers, setManeuvers] = useState<Maneuver[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Ghost boat state
+  const [ghostSession, setGhostSession] = useState<Session | null>(null);
+  const [ghostTrackPoints, setGhostTrackPoints] = useState<TrackPoint[]>([]);
+  const [ghostManeuvers, setGhostManeuvers] = useState<Maneuver[]>([]);
 
   // Replay state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -67,7 +85,12 @@ export default function RaceReplayPage() {
       loadTrackPoints(parseInt(id));
       loadManeuvers(parseInt(id));
     }
-  }, [id]);
+    if (ghostSessionId) {
+      loadGhostSession(parseInt(ghostSessionId));
+      loadGhostTrackPoints(parseInt(ghostSessionId));
+      loadGhostManeuvers(parseInt(ghostSessionId));
+    }
+  }, [id, ghostSessionId]);
 
   // Animation loop
   useEffect(() => {
@@ -165,6 +188,61 @@ export default function RaceReplayPage() {
     }
   };
 
+  // Ghost session loading functions
+  const loadGhostSession = async (sessionId: number) => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/sessions/${sessionId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to load ghost session');
+
+      const data = await response.json();
+      setGhostSession(data);
+    } catch (err: any) {
+      console.error('Failed to load ghost session:', err);
+    }
+  };
+
+  const loadGhostTrackPoints = async (sessionId: number) => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/sessions/${sessionId}/points`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to load ghost track points');
+
+      const data = await response.json();
+      setGhostTrackPoints(data);
+    } catch (err: any) {
+      console.error('Failed to load ghost track points:', err);
+    }
+  };
+
+  const loadGhostManeuvers = async (sessionId: number) => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/ai/maneuvers/session/${sessionId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGhostManeuvers(data);
+      }
+    } catch (err) {
+      console.error('Failed to load ghost maneuvers:', err);
+    }
+  };
+
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
@@ -219,12 +297,84 @@ export default function RaceReplayPage() {
 
   const progress = (currentIndex / (trackPoints.length - 1)) * 100;
 
+  // Ghost boat calculations
+  let ghostCurrentPoint: TrackPoint | null = null;
+  let ghostVisibleTrack: TrackPoint[] = [];
+  let timeDifference = 0;
+  let distanceDifference = 0;
+
+  if (ghostTrackPoints.length > 0 && trackPoints.length > 0) {
+    // Calculate elapsed time for main boat
+    const mainStartTime = new Date(trackPoints[0].ts).getTime();
+    const mainCurrentTime = new Date(currentPoint.ts).getTime();
+    const mainElapsedSeconds = (mainCurrentTime - mainStartTime) / 1000;
+
+    // Find corresponding point in ghost track based on elapsed time
+    const ghostStartTime = new Date(ghostTrackPoints[0].ts).getTime();
+    const targetGhostTime = ghostStartTime + (mainElapsedSeconds * 1000);
+
+    let ghostIndex = ghostTrackPoints.findIndex(p =>
+      new Date(p.ts).getTime() >= targetGhostTime
+    );
+
+    if (ghostIndex === -1) {
+      ghostIndex = ghostTrackPoints.length - 1;
+    } else if (ghostIndex === 0) {
+      ghostIndex = 0;
+    }
+
+    ghostCurrentPoint = ghostTrackPoints[ghostIndex];
+    ghostVisibleTrack = ghostTrackPoints.slice(0, ghostIndex + 1);
+
+    // Calculate time difference (negative means you're ahead)
+    const ghostElapsedSeconds = (new Date(ghostCurrentPoint.ts).getTime() - ghostStartTime) / 1000;
+    timeDifference = mainElapsedSeconds - ghostElapsedSeconds;
+
+    // Calculate distance difference (simple haversine)
+    if (ghostCurrentPoint) {
+      const R = 6371e3; // Earth radius in meters
+      const φ1 = currentPoint.lat * Math.PI / 180;
+      const φ2 = ghostCurrentPoint.lat * Math.PI / 180;
+      const Δφ = (ghostCurrentPoint.lat - currentPoint.lat) * Math.PI / 180;
+      const Δλ = (ghostCurrentPoint.lon - currentPoint.lon) * Math.PI / 180;
+
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+      distanceDifference = R * c;
+    }
+  }
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Race Replay</h1>
+        <h1 style={styles.title}>
+          {ghostSessionId ? '👻 Ghost Boat Racing' : 'Race Replay'}
+        </h1>
         {session && <h2 style={styles.subtitle}>{session.title}</h2>}
+        {ghostSession && (
+          <h3 style={styles.ghostSubtitle}>vs {ghostSession.title}</h3>
+        )}
       </div>
+
+      {/* Ghost Mode Status Banner */}
+      {ghostSessionId && (
+        <div style={styles.ghostBanner}>
+          <div style={styles.ghostBannerContent}>
+            <span style={styles.ghostIcon}>👻</span>
+            <div>
+              <div style={styles.ghostBannerTitle}>
+                {timeDifference > 0 ? '🔴 Behind' : timeDifference < 0 ? '🟢 Ahead' : '🟡 Tied'}
+              </div>
+              <div style={styles.ghostBannerStats}>
+                Time: {Math.abs(timeDifference).toFixed(1)}s | Distance: {Math.abs(distanceDifference).toFixed(0)}m
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Map */}
       <div style={styles.mapContainer}>
@@ -238,7 +388,18 @@ export default function RaceReplayPage() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          {/* Track line (completed portion) */}
+          {/* Ghost track line (completed portion) */}
+          {ghostVisibleTrack.length > 0 && (
+            <Polyline
+              positions={ghostVisibleTrack.map(p => [p.lat, p.lon])}
+              color="#9C27B0"
+              weight={3}
+              opacity={0.5}
+              dashArray="10, 10"
+            />
+          )}
+
+          {/* Main track line (completed portion) */}
           <Polyline
             positions={visibleTrack.map(p => [p.lat, p.lon])}
             color="#2196F3"
@@ -246,11 +407,29 @@ export default function RaceReplayPage() {
             opacity={0.7}
           />
 
+          {/* Ghost boat marker */}
+          {ghostCurrentPoint && (
+            <Marker
+              position={[ghostCurrentPoint.lat, ghostCurrentPoint.lon]}
+              icon={createBoatIcon('#9C27B0', true)}
+            >
+              <Popup>
+                <div>
+                  <strong>👻 Ghost Boat</strong><br/>
+                  Speed: {ghostCurrentPoint.sog.toFixed(1)} knots<br/>
+                  Heading: {ghostCurrentPoint.cog.toFixed(0)}°<br/>
+                  {ghostCurrentPoint.aws && `Wind: ${ghostCurrentPoint.aws.toFixed(1)} knots @ ${ghostCurrentPoint.awa?.toFixed(0)}°`}
+                </div>
+              </Popup>
+            </Marker>
+          )}
+
           {/* Current position marker */}
-          <Marker position={center}>
+          <Marker position={center} icon={createBoatIcon('#2196F3', false)}>
             <Popup>
               <div>
-                <strong>Speed: {currentPoint.sog.toFixed(1)} knots</strong><br/>
+                <strong>⛵ Your Boat</strong><br/>
+                Speed: {currentPoint.sog.toFixed(1)} knots<br/>
                 Heading: {currentPoint.cog.toFixed(0)}°<br/>
                 {currentPoint.aws && `Wind: ${currentPoint.aws.toFixed(1)} knots @ ${currentPoint.awa?.toFixed(0)}°`}
               </div>
@@ -548,5 +727,37 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#ffebee',
     color: '#c62828',
     borderRadius: '8px',
+  },
+  ghostSubtitle: {
+    fontSize: '16px',
+    color: '#9C27B0',
+    fontWeight: 'normal',
+    marginTop: '4px',
+  },
+  ghostBanner: {
+    backgroundColor: 'white',
+    padding: '16px',
+    borderRadius: '12px',
+    marginBottom: '20px',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    border: '2px solid #9C27B0',
+  },
+  ghostBannerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  ghostIcon: {
+    fontSize: '48px',
+  },
+  ghostBannerTitle: {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: '4px',
+  },
+  ghostBannerStats: {
+    fontSize: '16px',
+    color: '#666',
   },
 };

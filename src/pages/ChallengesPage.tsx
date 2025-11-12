@@ -230,19 +230,17 @@ export default function ChallengesPage() {
                 {/* Actions */}
                 <div style={styles.cardActions}>
                   <Link
-                    to={`/challenges/${challenge.id}`}
+                    to={`/replay/${challenge.session_id}?ghost=${challenge.session_id}`}
                     style={styles.viewButton}
                   >
-                    View Details
+                    👻 View Ghost
                   </Link>
-                  {challenge.can_attempt && !isExpired && (
-                    <Link
-                      to={`/challenges/${challenge.id}/race`}
-                      style={styles.raceButton}
-                    >
-                      🏁 Race Now
-                    </Link>
-                  )}
+                  <Link
+                    to={`/challenges/${challenge.id}`}
+                    style={styles.raceButton}
+                  >
+                    {challenge.can_attempt && !isExpired ? '🏁 Race Now' : 'View Details'}
+                  </Link>
                 </div>
               </div>
             );
