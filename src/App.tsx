@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RaceReplayPage from './pages/RaceReplayPage';
 import ClubsPage from './pages/ClubsPage';
 import ChallengesPage from './pages/ChallengesPage';
+import ChallengeDetailPage from './pages/ChallengeDetailPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -230,6 +231,13 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <ChallengesPage />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/challenges/:id" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <ChallengeDetailPage />
               </AppLayout>
             </ProtectedRoute>
           } />
