@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -176,6 +176,21 @@ export default function LoginPage() {
           color: '#64748b'
         }}>
           Use the same credentials from the mobile app
+        </p>
+
+        {/* Sign Up Link */}
+        <p style={{ marginTop: '16px', textAlign: 'center', fontSize: '14px', color: '#94a3b8' }}>
+          Don't have an account?{' '}
+          <Link
+            to="/register"
+            style={{
+              color: '#38bdf8',
+              textDecoration: 'none',
+              fontWeight: '500'
+            }}
+          >
+            Sign Up
+          </Link>
         </p>
       </div>
     </div>

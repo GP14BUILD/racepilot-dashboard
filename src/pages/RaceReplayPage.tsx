@@ -54,7 +54,7 @@ interface Video {
   created_at: string;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = 'http://localhost:8000';
 
 // Fix Leaflet default marker icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -557,7 +557,7 @@ export default function RaceReplayPage() {
           <div style={styles.metricValue}>{currentPoint.cog.toFixed(0)}<span style={styles.metricUnit}>°</span></div>
         </div>
         {currentPoint.aws && (
-          <>
+          <div>
             <div style={styles.metric}>
               <div style={styles.metricLabel}>Wind Speed</div>
               <div style={styles.metricValue}>{currentPoint.aws.toFixed(1)} <span style={styles.metricUnit}>kts</span></div>
@@ -566,7 +566,7 @@ export default function RaceReplayPage() {
               <div style={styles.metricLabel}>Wind Angle</div>
               <div style={styles.metricValue}>{currentPoint.awa?.toFixed(0)}<span style={styles.metricUnit}>°</span></div>
             </div>
-          </>
+          </div>
         )}
         {nearbyManeuvers.length > 0 && (
           <div style={{...styles.metric, gridColumn: '1 / -1'}}>
@@ -653,6 +653,7 @@ export default function RaceReplayPage() {
   );
 }
 
+// Styles for the race replay page
 const styles: Record<string, React.CSSProperties> = {
   container: {
     maxWidth: '1400px',

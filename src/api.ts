@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Session, TrackPoint, RaceCourse, Maneuver, ManeuverStats, AnomalyDetectionResult, CoachingRecommendation, CoachingAnalysisResult, WindShift, WindPattern } from './types';
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -105,6 +105,51 @@ export const getWindShifts = async (sessionId: number): Promise<{ session_id: nu
 
 export const getWindPattern = async (sessionId: number): Promise<WindPattern> => {
   const response = await api.get(`/ai/wind/pattern/${sessionId}`);
+  return response.data;
+};
+
+// Payment & Subscription APIs
+export interface SubscriptionPlan {
+  name: string;
+  price_id: string;
+  price: number;
+  interval: string;
+}
+
+export interface SubscriptionStatus {
+  subscribed: boolean;
+  plan: string;
+  status?: string;
+  current_period_end?: string;
+  features: {
+    max_sessions: number;
+    ai_coaching: boolean;
+    fleet_replay: boolean;
+    wind_analysis?: boolean;
+  };
+}
+
+export const getPlans = async (): Promise<Record<string, SubscriptionPlan>> => {
+  const response = await api.get('/payments/plans');
+  return response.data;
+};
+
+export const createCheckoutSession = async (planId: string, successUrl: string, cancelUrl: string): Promise<{ checkout_url: string; session_id: string }> => {
+  const response = await api.post('/payments/create-checkout-session', {
+    plan_id: planId,
+    success_url: successUrl,
+    cancel_url: cancelUrl
+  });
+  return response.data;
+};
+
+export const getSubscriptionStatus = async (): Promise<SubscriptionStatus> => {
+  const response = await api.get('/payments/subscription-status');
+  return response.data;
+};
+
+export const cancelSubscription = async (): Promise<{ message: string }> => {
+  const response = await api.post('/payments/cancel-subscription');
   return response.data;
 };
 

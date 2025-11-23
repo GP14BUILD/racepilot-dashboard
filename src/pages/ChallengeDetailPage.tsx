@@ -38,7 +38,7 @@ interface Session {
   end_ts?: string;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = 'http://localhost:8000';
 
 export default function ChallengeDetailPage() {
   const { id } = useParams<{ id: string }>();

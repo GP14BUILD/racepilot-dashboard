@@ -5,7 +5,7 @@ interface VideoUploadProps {
   onUploadComplete?: () => void;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = 'http://localhost:8000';
 
 export default function VideoUpload({ sessionId, onUploadComplete }: VideoUploadProps) {
   const [file, setFile] = useState<File | null>(null);

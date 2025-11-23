@@ -26,7 +26,7 @@ interface ClubMember {
   last_login?: string;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = 'http://localhost:8000';
 
 export default function ClubsPage() {
   const { user, token } = useAuth();

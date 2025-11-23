@@ -4,10 +4,10 @@ import HomePage from './pages/HomePage';
 import SessionPage from './pages/SessionPage';
 import FleetComparisonPage from './pages/FleetComparisonPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import RaceReplayPage from './pages/RaceReplayPage';
 import ClubsPage from './pages/ClubsPage';
-import ChallengesPage from './pages/ChallengesPage';
-import ChallengeDetailPage from './pages/ChallengeDetailPage';
+import SubscriptionPage from './pages/SubscriptionPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -107,22 +107,6 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                 >
                   Dashboard
                 </Link>
-                <Link
-                  to="/challenges"
-                  style={{
-                    padding: '8px 16px',
-                    color: '#e2e8f0',
-                    textDecoration: 'none',
-                    borderRadius: '6px',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    transition: 'background 0.2s'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                >
-                  🏁 Challenges
-                </Link>
                 {(user.role === 'admin' || user.role === 'club_admin') && (
                   <Link
                     to="/clubs"
@@ -141,6 +125,22 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                     Clubs
                   </Link>
                 )}
+                <Link
+                  to="/subscription"
+                  style={{
+                    padding: '8px 16px',
+                    color: '#e2e8f0',
+                    textDecoration: 'none',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  💳 Subscription
+                </Link>
               </nav>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '14px', fontWeight: '500', color: '#e2e8f0' }}>
@@ -188,8 +188,9 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public route */}
+          {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected routes */}
           <Route path="/" element={
@@ -227,17 +228,10 @@ function App() {
               </AppLayout>
             </ProtectedRoute>
           } />
-          <Route path="/challenges" element={
+          <Route path="/subscription" element={
             <ProtectedRoute>
               <AppLayout>
-                <ChallengesPage />
-              </AppLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/challenges/:id" element={
-            <ProtectedRoute>
-              <AppLayout>
-                <ChallengeDetailPage />
+                <SubscriptionPage />
               </AppLayout>
             </ProtectedRoute>
           } />
