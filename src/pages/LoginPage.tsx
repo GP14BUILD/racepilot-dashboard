@@ -15,7 +15,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const API_URL = 'https://racepilot-backend-production.up.railway.app';
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();

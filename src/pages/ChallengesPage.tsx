@@ -19,7 +19,7 @@ interface Challenge {
   can_attempt: boolean;
 }
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://racepilot-backend-production.up.railway.app';
 
 export default function ChallengesPage() {
   const { user, token } = useAuth();

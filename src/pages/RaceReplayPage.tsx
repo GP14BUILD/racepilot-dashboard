@@ -54,7 +54,7 @@ interface Video {
   created_at: string;
 }
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://racepilot-backend-production.up.railway.app';
 
 // Fix Leaflet default marker icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
