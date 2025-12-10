@@ -12,12 +12,12 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Accept build-time arguments from Railway
+# Accept build-time environment variable from Railway
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
-# Build the app
-RUN npm run build
+# Make build script executable and run it
+RUN chmod +x build.sh && ./build.sh
 
 # Production stage - serve with nginx
 FROM nginx:alpine
