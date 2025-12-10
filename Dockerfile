@@ -9,15 +9,11 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source code (includes .env.production)
 COPY . .
 
-# Accept build-time environment variable from Railway
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-
-# Make build script executable and run it
-RUN chmod +x build.sh && ./build.sh
+# Build the app (Vite will use .env.production)
+RUN npm run build
 
 # Production stage - serve with nginx
 FROM nginx:alpine
