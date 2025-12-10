@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import RaceReplayPage from './pages/RaceReplayPage';
 import ClubsPage from './pages/ClubsPage';
 import SubscriptionPage from './pages/SubscriptionPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -191,6 +192,7 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
           {/* Protected routes */}
           <Route path="/" element={
