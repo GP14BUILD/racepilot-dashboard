@@ -62,31 +62,15 @@ function AppLayout({ children }: { children: React.ReactNode }) {
           justifyContent: 'space-between'
         }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', color: '#fff' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              background: 'linear-gradient(to bottom right, #38bdf8, #0284c7)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '24px'
-            }}>
-              <span>⛵</span>
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                background: 'linear-gradient(to right, #38bdf8, #0284c7)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                margin: 0
-              }}>
-                RacePilot
-              </h1>
-              <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0 }}>Professional Race Analysis</p>
-            </div>
+            <img
+              src="/logo.png"
+              alt="RacePilot Logo"
+              style={{
+                height: '48px',
+                width: 'auto',
+                objectFit: 'contain'
+              }}
+            />
           </Link>
 
           {user && (

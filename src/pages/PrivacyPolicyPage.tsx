@@ -16,30 +16,15 @@ export default function PrivacyPolicyPage() {
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', color: '#fff', marginBottom: '24px' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            background: 'linear-gradient(to bottom right, #38bdf8, #0284c7)',
-            borderRadius: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px'
-          }}>
-            <span>⛵</span>
-          </div>
-          <div>
-            <h1 style={{
-              fontSize: '24px',
-              fontWeight: 'bold',
-              background: 'linear-gradient(to right, #38bdf8, #0284c7)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              margin: 0
-            }}>
-              RacePilot
-            </h1>
-          </div>
+          <img
+            src="/logo.png"
+            alt="RacePilot Logo"
+            style={{
+              height: '48px',
+              width: 'auto',
+              objectFit: 'contain'
+            }}
+          />
         </Link>
         <h2 style={{ fontSize: '36px', fontWeight: 'bold', margin: '0' }}>Privacy Policy</h2>
         <p style={{ color: '#94a3b8', margin: '8px 0 0', fontSize: '14px' }}>Last Updated: December 10, 2024</p>
