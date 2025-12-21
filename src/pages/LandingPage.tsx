@@ -82,7 +82,10 @@ export default function LandingPage() {
             height: '150px',
             width: 'auto',
             objectFit: 'contain',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto'
           }}
         />
 
