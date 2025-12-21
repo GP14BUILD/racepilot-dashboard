@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import SessionPage from './pages/SessionPage';
 import FleetComparisonPage from './pages/FleetComparisonPage';
@@ -77,7 +78,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <nav style={{ display: 'flex', gap: '12px', marginRight: '16px' }}>
                 <Link
-                  to="/"
+                  to="/dashboard"
                   style={{
                     padding: '8px 16px',
                     color: '#e2e8f0',
@@ -174,12 +175,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public routes */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
           {/* Protected routes */}
-          <Route path="/" element={
+          <Route path="/dashboard" element={
             <ProtectedRoute>
               <AppLayout>
                 <HomePage />
