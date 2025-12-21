@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Session, TrackPoint, RaceCourse, Maneuver, ManeuverStats, AnomalyDetectionResult, CoachingRecommendation, CoachingAnalysisResult, WindShift, WindPattern } from './types';
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = 'https://api.race-pilot.app';
 
 const api = axios.create({
   baseURL: API_URL,
