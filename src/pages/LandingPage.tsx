@@ -79,7 +79,7 @@ export default function LandingPage() {
           WebkitTextFillColor: 'transparent',
           lineHeight: '1.2'
         }}>
-          Professional Race Analysis<br />with Unmatched GPS Accuracy
+          AI-Powered Sailing Analytics<br />That Makes You Faster
         </h1>
 
         <p style={{
@@ -89,8 +89,8 @@ export default function LandingPage() {
           margin: '0 auto 40px',
           lineHeight: '1.6'
         }}>
-          RacePilot combines elite-grade Garmin GLO 2 GPS hardware with intelligent analytics
-          to give you the competitive edge on the water.
+          Automatic maneuver detection, AI coaching insights, and wind pattern analysis.
+          Professional GPS hardware meets intelligent race analytics.
         </p>
 
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -143,16 +143,16 @@ export default function LandingPage() {
           margin: '80px auto 0'
         }}>
           <div>
-            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>10Hz</div>
-            <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>GPS Update Rate</div>
+            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>AI</div>
+            <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Maneuver Detection</div>
           </div>
           <div>
-            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>±3m</div>
-            <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Position Accuracy</div>
+            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>10Hz</div>
+            <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Pro GPS (Garmin GLO 2)</div>
           </div>
           <div>
             <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>Real-time</div>
-            <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Wind Data</div>
+            <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Coaching Insights</div>
           </div>
         </div>
       </section>
@@ -177,7 +177,7 @@ export default function LandingPage() {
           textAlign: 'center',
           marginBottom: '60px'
         }}>
-          The most accurate GPS sailing tracker on the market
+          AI-powered analytics that traditional GPS trackers can't match
         </p>
 
         <div style={{
@@ -185,24 +185,41 @@ export default function LandingPage() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           gap: '32px'
         }}>
-          {/* Feature 1 */}
+          {/* Feature 1 - AI Maneuver Detection */}
           <div style={{
             padding: '32px',
             background: 'rgba(30, 41, 59, 0.5)',
             borderRadius: '16px',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            <div style={{ fontSize: '32px', marginBottom: '16px' }}>📡</div>
+            <div style={{ fontSize: '32px', marginBottom: '16px' }}>🤖</div>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              Garmin GLO 2 GPS
+              AI Maneuver Detection
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
-              Professional-grade GPS with 10Hz update rate and WAAS/EGNOS correction for
-              ±3 meter accuracy. Far superior to any phone GPS.
+              Automatically detect and analyze tacks, gybes, mark roundings, and starts.
+              No manual tagging required - our AI does it all in real-time.
             </p>
           </div>
 
-          {/* Feature 2 */}
+          {/* Feature 2 - AI Coaching */}
+          <div style={{
+            padding: '32px',
+            background: 'rgba(30, 41, 59, 0.5)',
+            borderRadius: '16px',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
+            <div style={{ fontSize: '32px', marginBottom: '16px' }}>💡</div>
+            <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
+              Personalized AI Coaching
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
+              Get instant insights on tack efficiency, speed loss, and tactical errors.
+              Like having an Olympic coach analyze every race.
+            </p>
+          </div>
+
+          {/* Feature 3 - Wind Pattern Analysis */}
           <div style={{
             padding: '32px',
             background: 'rgba(30, 41, 59, 0.5)',
@@ -211,45 +228,28 @@ export default function LandingPage() {
           }}>
             <div style={{ fontSize: '32px', marginBottom: '16px' }}>💨</div>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              Wind Sensor Integration
+              Wind Pattern Analysis
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
-              Connect Bluetooth wind sensors to capture real-time True Wind Angle,
-              True Wind Speed, and Apparent Wind data during your races.
+              AI detects wind shifts, oscillations, and persistent patterns automatically.
+              Understand which side of the course paid off and why.
             </p>
           </div>
 
-          {/* Feature 3 */}
+          {/* Feature 4 - Fleet Comparison & Race Replay */}
           <div style={{
             padding: '32px',
             background: 'rgba(30, 41, 59, 0.5)',
             borderRadius: '16px',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            <div style={{ fontSize: '32px', marginBottom: '16px' }}>🔒</div>
+            <div style={{ fontSize: '32px', marginBottom: '16px' }}>🗺️</div>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              Waterproof & Rugged
+              Fleet Comparison & Race Replay
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
-              NANUK Nano 310 military-grade waterproof case with RAM Mount mast mounting system.
-              Built to withstand harsh marine conditions.
-            </p>
-          </div>
-
-          {/* Feature 4 */}
-          <div style={{
-            padding: '32px',
-            background: 'rgba(30, 41, 59, 0.5)',
-            borderRadius: '16px',
-            border: '1px solid rgba(255, 255, 255, 0.1)'
-          }}>
-            <div style={{ fontSize: '32px', marginBottom: '16px' }}>📊</div>
-            <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              Detailed Analytics
-            </h3>
-            <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
-              Post-race analysis with speed curves, VMG calculations, tack analysis,
-              and side-by-side fleet comparisons.
+              Compare multiple sailors side-by-side on the same map. Replay races to see
+              exactly where you gained or lost positions. Learn from the fastest boats.
             </p>
           </div>
 
