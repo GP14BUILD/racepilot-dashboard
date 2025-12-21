@@ -16,7 +16,7 @@ export default function FeaturesPage() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <img
             src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_34_49%20PM.png"
             alt="RacePilot"
@@ -26,7 +26,6 @@ export default function FeaturesPage() {
               objectFit: 'contain'
             }}
           />
-          <span style={{ color: '#60a5fa', fontSize: '20px', fontWeight: '700' }}>RacePilot</span>
         </Link>
 
         <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
