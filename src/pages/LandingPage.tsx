@@ -71,7 +71,7 @@ export default function LandingPage() {
       <section style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '80px 24px',
+        padding: '140px 24px 80px',
         textAlign: 'center'
       }}>
         {/* Hero Logo */}
