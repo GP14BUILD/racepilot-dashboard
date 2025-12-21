@@ -7,15 +7,15 @@ export default function FAQPage() {
   const faqs = [
     {
       question: "What makes RacePilot different from other GPS trackers?",
-      answer: "RacePilot uses advanced AI to automatically detect maneuvers, provide coaching insights, and analyze wind patterns. Traditional GPS trackers just record your track - RacePilot tells you how to get faster. Our AI detects tacks, gybes, mark roundings automatically and gives you personalized recommendations."
+      answer: "RacePilot uses our proprietary intelligent analytics system to automatically detect maneuvers, provide coaching insights, and analyze wind patterns. Traditional GPS trackers just record your track - RacePilot tells you how to get faster. Our system automatically detects tacks, gybes, mark roundings and gives you personalized recommendations."
     },
     {
       question: "Do I need to buy the hardware package?",
       answer: "You can use RacePilot with any GPS device, but we strongly recommend the Garmin GLO 2 for the best experience. Phone GPS isn't accurate enough for serious race analysis - the GLO 2 provides 10Hz updates and ±3m accuracy with WAAS/EGNOS correction. Our hardware packages include everything you need: GPS, waterproof case, and mast mount."
     },
     {
-      question: "How does the AI maneuver detection work?",
-      answer: "Our AI analyzes your GPS track in real-time, looking for characteristic patterns in heading changes, speed variations, and boat behavior. It can detect tacks, gybes, mark roundings, and starts automatically - no manual tagging required. After each maneuver, it calculates efficiency metrics like speed loss, time to recover, and angle precision."
+      question: "How does the automatic maneuver detection work?",
+      answer: "Our intelligent analytics system analyzes your GPS track in real-time, looking for characteristic patterns in heading changes, speed variations, and boat behavior. It can detect tacks, gybes, mark roundings, and starts automatically - no manual tagging required. After each maneuver, it calculates efficiency metrics like speed loss, time to recover, and angle precision."
     },
     {
       question: "Can I compare my performance with other sailors?",
@@ -31,7 +31,7 @@ export default function FAQPage() {
     },
     {
       question: "What's included in the subscription?",
-      answer: "The subscription includes unlimited session recording, AI maneuver detection, personalized coaching insights, wind pattern analysis, fleet comparison, race replay, and cloud storage for all your sessions. Hardware packages include 3 months (Starter) or 12 months (Pro) subscription included."
+      answer: "The subscription includes unlimited session recording, automatic maneuver detection, personalized coaching insights, wind pattern analysis, fleet comparison, race replay, and cloud storage for all your sessions. Hardware packages include 3 months (Starter) or 12 months (Pro) subscription included."
     },
     {
       question: "Can I use this for club racing?",
@@ -78,24 +78,20 @@ export default function FAQPage() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-            <img
-              src="/logo.svg"
-              alt="RacePilot"
-              style={{
-                height: '40px',
-                width: 'auto',
-                filter: 'brightness(0) invert(1)'
-              }}
-            />
-          </Link>
-        </div>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+          <img
+            src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_40_39%20PM.png"
+            alt="RacePilot"
+            style={{
+              height: '48px',
+              width: 'auto',
+              objectFit: 'contain'
+            }}
+          />
+          <span style={{ color: '#60a5fa', fontSize: '20px', fontWeight: '700' }}>RacePilot</span>
+        </Link>
 
         <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-          <Link to="/" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
-            Home
-          </Link>
           <Link to="/features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
             Features
           </Link>

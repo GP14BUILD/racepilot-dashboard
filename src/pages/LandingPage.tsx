@@ -24,9 +24,9 @@ export default function LandingPage() {
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
             <img
-              src="/logo.png"
+              src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_40_39%20PM.png"
               alt="RacePilot Logo"
               style={{
                 height: '48px',
@@ -34,12 +34,10 @@ export default function LandingPage() {
                 objectFit: 'contain'
               }}
             />
-          </div>
+            <span style={{ color: '#60a5fa', fontSize: '20px', fontWeight: '700' }}>RacePilot</span>
+          </Link>
 
           <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-            <Link to="/" style={{ color: '#60a5fa', textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>
-              Home
-            </Link>
             <Link to="/features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               Features
             </Link>
@@ -85,7 +83,7 @@ export default function LandingPage() {
           WebkitTextFillColor: 'transparent',
           lineHeight: '1.2'
         }}>
-          AI-Powered Sailing Analytics<br />That Makes You Faster
+          Intelligent Sailing Analytics<br />That Makes You Faster
         </h1>
 
         <p style={{
@@ -95,8 +93,8 @@ export default function LandingPage() {
           margin: '0 auto 40px',
           lineHeight: '1.6'
         }}>
-          Automatic maneuver detection, AI coaching insights, and wind pattern analysis.
-          Professional GPS hardware meets intelligent race analytics.
+          Automatic maneuver detection, personalized coaching insights, and wind pattern analysis.
+          Professional GPS hardware meets our proprietary analytics system.
         </p>
 
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -149,7 +147,7 @@ export default function LandingPage() {
           margin: '80px auto 0'
         }}>
           <div>
-            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>AI</div>
+            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>Auto</div>
             <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Maneuver Detection</div>
           </div>
           <div>
@@ -157,7 +155,7 @@ export default function LandingPage() {
             <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Pro GPS (Garmin GLO 2)</div>
           </div>
           <div>
-            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>Real-time</div>
+            <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>Smart</div>
             <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Coaching Insights</div>
           </div>
         </div>
@@ -183,7 +181,7 @@ export default function LandingPage() {
           textAlign: 'center',
           marginBottom: '60px'
         }}>
-          AI-powered analytics that traditional GPS trackers can't match
+          Advanced analytics that traditional GPS trackers can't match
         </p>
 
         <div style={{
@@ -191,24 +189,24 @@ export default function LandingPage() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           gap: '32px'
         }}>
-          {/* Feature 1 - AI Maneuver Detection */}
+          {/* Feature 1 - Automatic Maneuver Detection */}
           <div style={{
             padding: '32px',
             background: 'rgba(30, 41, 59, 0.5)',
             borderRadius: '16px',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            <div style={{ fontSize: '32px', marginBottom: '16px' }}>🤖</div>
+            <div style={{ fontSize: '32px', marginBottom: '16px' }}>⚡</div>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              AI Maneuver Detection
+              Automatic Maneuver Detection
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
               Automatically detect and analyze tacks, gybes, mark roundings, and starts.
-              No manual tagging required - our AI does it all in real-time.
+              No manual tagging required - our intelligent system does it all in real-time.
             </p>
           </div>
 
-          {/* Feature 2 - AI Coaching */}
+          {/* Feature 2 - Intelligent Coaching */}
           <div style={{
             padding: '32px',
             background: 'rgba(30, 41, 59, 0.5)',
@@ -217,7 +215,7 @@ export default function LandingPage() {
           }}>
             <div style={{ fontSize: '32px', marginBottom: '16px' }}>💡</div>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              Personalized AI Coaching
+              Personalized Coaching Insights
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
               Get instant insights on tack efficiency, speed loss, and tactical errors.
@@ -234,10 +232,10 @@ export default function LandingPage() {
           }}>
             <div style={{ fontSize: '32px', marginBottom: '16px' }}>💨</div>
             <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
-              Wind Pattern Analysis
+              Smart Wind Analysis
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
-              AI detects wind shifts, oscillations, and persistent patterns automatically.
+              Automatically detect wind shifts, oscillations, and persistent patterns.
               Understand which side of the course paid off and why.
             </p>
           </div>

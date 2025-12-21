@@ -16,24 +16,20 @@ export default function FeaturesPage() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-            <img
-              src="/logo.svg"
-              alt="RacePilot"
-              style={{
-                height: '40px',
-                width: 'auto',
-                filter: 'brightness(0) invert(1)'
-              }}
-            />
-          </Link>
-        </div>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+          <img
+            src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_40_39%20PM.png"
+            alt="RacePilot"
+            style={{
+              height: '48px',
+              width: 'auto',
+              objectFit: 'contain'
+            }}
+          />
+          <span style={{ color: '#60a5fa', fontSize: '20px', fontWeight: '700' }}>RacePilot</span>
+        </Link>
 
         <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-          <Link to="/" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
-            Home
-          </Link>
           <Link to="/features" style={{ color: '#60a5fa', textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>
             Features
           </Link>
@@ -77,7 +73,7 @@ export default function FeaturesPage() {
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent'
         }}>
-          AI-Powered Features
+          Advanced Features
         </h1>
         <p style={{
           fontSize: '20px',
@@ -101,19 +97,19 @@ export default function FeaturesPage() {
           gap: '32px'
         }}>
 
-          {/* AI Maneuver Detection */}
+          {/* Automatic Maneuver Detection */}
           <div style={{
             padding: '40px',
             background: 'rgba(30, 41, 59, 0.5)',
             borderRadius: '20px',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '20px' }}>🤖</div>
+            <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚡</div>
             <h2 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '16px' }}>
-              AI Maneuver Detection
+              Automatic Maneuver Detection
             </h2>
             <p style={{ color: '#cbd5e1', lineHeight: '1.8', marginBottom: '24px' }}>
-              Our advanced AI automatically detects and analyzes every tack, gybe, mark rounding, and start sequence in real-time. No manual tagging required.
+              Our intelligent analytics system automatically detects and analyzes every tack, gybe, mark rounding, and start sequence in real-time. No manual tagging required.
             </p>
             <ul style={{ color: '#94a3b8', lineHeight: '2', listStyle: 'none', padding: 0 }}>
               <li>✓ Automatic tack detection with efficiency scoring</li>
@@ -123,7 +119,7 @@ export default function FeaturesPage() {
             </ul>
           </div>
 
-          {/* AI Coaching */}
+          {/* Intelligent Coaching */}
           <div style={{
             padding: '40px',
             background: 'rgba(30, 41, 59, 0.5)',
@@ -132,7 +128,7 @@ export default function FeaturesPage() {
           }}>
             <div style={{ fontSize: '48px', marginBottom: '20px' }}>💡</div>
             <h2 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '16px' }}>
-              Personalized AI Coaching
+              Personalized Coaching Insights
             </h2>
             <p style={{ color: '#cbd5e1', lineHeight: '1.8', marginBottom: '24px' }}>
               Get instant, actionable insights on your sailing performance. Like having an Olympic coach analyze every race.
@@ -145,7 +141,7 @@ export default function FeaturesPage() {
             </ul>
           </div>
 
-          {/* Wind Pattern Analysis */}
+          {/* Smart Wind Analysis */}
           <div style={{
             padding: '40px',
             background: 'rgba(30, 41, 59, 0.5)',
@@ -154,10 +150,10 @@ export default function FeaturesPage() {
           }}>
             <div style={{ fontSize: '48px', marginBottom: '20px' }}>💨</div>
             <h2 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '16px' }}>
-              Wind Pattern Analysis
+              Smart Wind Analysis
             </h2>
             <p style={{ color: '#cbd5e1', lineHeight: '1.8', marginBottom: '24px' }}>
-              AI detects wind shifts, oscillations, and persistent patterns automatically. Understand which side of the course paid off and why.
+              Automatically detect wind shifts, oscillations, and persistent patterns. Understand which side of the course paid off and why.
             </p>
             <ul style={{ color: '#94a3b8', lineHeight: '2', listStyle: 'none', padding: 0 }}>
               <li>✓ Automatic wind shift detection</li>
