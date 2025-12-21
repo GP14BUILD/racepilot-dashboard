@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LandingPage from './pages/LandingPage';
+import ShopPage from './pages/ShopPage';
 import HomePage from './pages/HomePage';
 import SessionPage from './pages/SessionPage';
 import FleetComparisonPage from './pages/FleetComparisonPage';
@@ -176,6 +177,7 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

@@ -40,9 +40,9 @@ export default function LandingPage() {
             <a href="#features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               Features
             </a>
-            <a href="#packages" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
-              Packages
-            </a>
+            <Link to="/shop" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+              Shop
+            </Link>
             <Link
               to="/login"
               style={{
@@ -231,7 +231,7 @@ export default function LandingPage() {
               Waterproof & Rugged
             </h3>
             <p style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
-              Military-grade waterproof case with secure mast mounting system.
+              NANUK Nano 310 military-grade waterproof case with RAM Mount mast mounting system.
               Built to withstand harsh marine conditions.
             </p>
           </div>
@@ -329,7 +329,7 @@ export default function LandingPage() {
               Starter Package
             </h3>
             <div style={{ fontSize: '48px', fontWeight: '800', color: '#60a5fa', marginBottom: '24px' }}>
-              $199
+              $249
             </div>
 
             <ul style={{ listStyle: 'none', padding: 0, marginBottom: '32px' }}>
@@ -337,10 +337,10 @@ export default function LandingPage() {
                 ✓ Garmin GLO 2 GPS Receiver
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                ✓ Military-grade Waterproof Case
+                ✓ NANUK Nano 310 Waterproof Case
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                ✓ Basic Mast Mounting Bracket
+                ✓ RAM Mount Mast Bracket
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
                 ✓ RacePilot App (3 months included)
@@ -392,7 +392,7 @@ export default function LandingPage() {
               Pro Package
             </h3>
             <div style={{ fontSize: '48px', fontWeight: '800', color: '#60a5fa', marginBottom: '24px' }}>
-              $599
+              $749
             </div>
 
             <ul style={{ listStyle: 'none', padding: 0, marginBottom: '32px' }}>
@@ -400,9 +400,9 @@ export default function LandingPage() {
                 ✓ Everything in Starter, plus:
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                ✓ Bluetooth Wind Sensor
+                ✓ Calypso Ultrasonic Wind Sensor
               </li>
-              <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
+<li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
                 ✓ Premium RAM Mounting System
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
