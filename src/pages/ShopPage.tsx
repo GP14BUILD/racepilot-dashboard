@@ -40,6 +40,15 @@ export default function ShopPage() {
             <Link to="/" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               Home
             </Link>
+            <Link to="/features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+              Features
+            </Link>
+            <Link to="/shop" style={{ color: '#60a5fa', textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>
+              Shop
+            </Link>
+            <Link to="/faq" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+              FAQ
+            </Link>
             <Link
               to="/login"
               style={{

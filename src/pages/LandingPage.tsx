@@ -37,11 +37,17 @@ export default function LandingPage() {
           </div>
 
           <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-            <a href="#features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+            <Link to="/" style={{ color: '#60a5fa', textDecoration: 'none', fontSize: '15px', fontWeight: '600' }}>
+              Home
+            </Link>
+            <Link to="/features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               Features
-            </a>
+            </Link>
             <Link to="/shop" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               Shop
+            </Link>
+            <Link to="/faq" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+              FAQ
             </Link>
             <Link
               to="/login"
