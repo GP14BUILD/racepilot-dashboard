@@ -74,6 +74,18 @@ export default function LandingPage() {
         padding: '80px 24px',
         textAlign: 'center'
       }}>
+        {/* Hero Logo */}
+        <img
+          src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_34_49%20PM.png"
+          alt="RacePilot"
+          style={{
+            height: '150px',
+            width: 'auto',
+            objectFit: 'contain',
+            marginBottom: '32px'
+          }}
+        />
+
         <h1 style={{
           fontSize: '56px',
           fontWeight: '800',
