@@ -24,17 +24,17 @@ export default function LandingPage() {
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none' }}>
             <img
               src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_40_39%20PM.png"
               alt="RacePilot Logo"
               style={{
-                height: '48px',
+                height: '64px',
                 width: 'auto',
                 objectFit: 'contain'
               }}
             />
-            <span style={{ color: '#60a5fa', fontSize: '20px', fontWeight: '700' }}>RacePilot</span>
+            <span style={{ color: '#60a5fa', fontSize: '24px', fontWeight: '700' }}>RacePilot</span>
           </Link>
 
           <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
@@ -158,6 +158,175 @@ export default function LandingPage() {
             <div style={{ fontSize: '40px', fontWeight: '800', color: '#60a5fa' }}>Smart</div>
             <div style={{ fontSize: '16px', color: '#94a3b8', marginTop: '8px' }}>Coaching Insights</div>
           </div>
+        </div>
+      </section>
+
+      {/* How It Works - Session Recording & Improvement Tracking */}
+      <section style={{
+        maxWidth: '1100px',
+        margin: '0 auto',
+        padding: '80px 24px',
+        background: 'rgba(59, 130, 246, 0.05)',
+        borderRadius: '24px',
+        border: '1px solid rgba(59, 130, 246, 0.2)'
+      }}>
+        <h2 style={{
+          fontSize: '42px',
+          fontWeight: '800',
+          marginBottom: '16px',
+          textAlign: 'center',
+          background: 'linear-gradient(to right, #ffffff, #60a5fa)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent'
+        }}>
+          How RacePilot Helps You Improve
+        </h2>
+        <p style={{
+          fontSize: '18px',
+          color: '#94a3b8',
+          textAlign: 'center',
+          marginBottom: '60px',
+          maxWidth: '800px',
+          margin: '0 auto 60px'
+        }}>
+          Every session you sail builds a complete picture of your performance. Our system learns your sailing patterns and identifies exactly where you're losing time.
+        </p>
+
+        <div style={{ display: 'grid', gap: '32px' }}>
+          {/* Step 1 */}
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+            <div style={{
+              minWidth: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+              borderRadius: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px',
+              fontWeight: '800',
+              color: '#fff'
+            }}>1</div>
+            <div>
+              <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
+                Record Every Session
+              </h3>
+              <p style={{ color: '#cbd5e1', lineHeight: '1.8', fontSize: '16px' }}>
+                Mount your GPS on the mast, start the app, and go sailing. RacePilot captures every second of your session at 10Hz precision - that's 10 position points per second, 600 per minute. Every tack, every gybe, every wind shift, every speed change is recorded with professional-grade accuracy.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+            <div style={{
+              minWidth: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+              borderRadius: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px',
+              fontWeight: '800',
+              color: '#fff'
+            }}>2</div>
+            <div>
+              <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
+                Automatic Analysis After Each Sail
+              </h3>
+              <p style={{ color: '#cbd5e1', lineHeight: '1.8', fontSize: '16px', marginBottom: '12px' }}>
+                When you finish and sync your session, our intelligent analytics system goes to work. It automatically identifies every maneuver you performed - tacks, gybes, mark roundings, starts - without you tagging anything manually. For each maneuver, the system measures:
+              </p>
+              <ul style={{ color: '#94a3b8', lineHeight: '1.8', fontSize: '16px', paddingLeft: '20px' }}>
+                <li>How much speed you lost during the tack</li>
+                <li>How long it took to recover to full speed</li>
+                <li>Your heading change precision</li>
+                <li>Whether you tacked on a lift or header</li>
+                <li>How you compare to your previous tacks</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+            <div style={{
+              minWidth: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+              borderRadius: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px',
+              fontWeight: '800',
+              color: '#fff'
+            }}>3</div>
+            <div>
+              <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
+                Personalized Coaching Insights
+              </h3>
+              <p style={{ color: '#cbd5e1', lineHeight: '1.8', fontSize: '16px', marginBottom: '12px' }}>
+                The system doesn't just show you data - it tells you what went wrong and how to fix it. After analyzing your session, you receive specific, actionable recommendations:
+              </p>
+              <ul style={{ color: '#94a3b8', lineHeight: '1.8', fontSize: '16px', paddingLeft: '20px' }}>
+                <li>"Your tacks are losing 1.2 knots on average - focus on smoother helm movement"</li>
+                <li>"You tacked into a header 4 times - wait for the lift before tacking"</li>
+                <li>"Your mark roundings are costing you 8 seconds each - carry more speed in"</li>
+                <li>"You sailed the left side of the course but the right paid - wind shifted 15° persistent"</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Step 4 */}
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+            <div style={{
+              minWidth: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+              borderRadius: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px',
+              fontWeight: '800',
+              color: '#fff'
+            }}>4</div>
+            <div>
+              <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px' }}>
+                Track Improvement Over Time
+              </h3>
+              <p style={{ color: '#cbd5e1', lineHeight: '1.8', fontSize: '16px' }}>
+                Every session adds to your performance history. The system builds up a complete picture of your sailing patterns across weeks and months. You can see your tacking efficiency improve from session to session, track your average speed trending upward, and watch as the mistakes become less frequent. Compare this week's race to last week's, this month to last month. The data shows exactly where you've improved and where you still need work.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          marginTop: '48px',
+          padding: '32px',
+          background: 'rgba(30, 41, 59, 0.5)',
+          borderRadius: '16px',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          <p style={{
+            fontSize: '18px',
+            color: '#60a5fa',
+            fontWeight: '600',
+            marginBottom: '12px',
+            textAlign: 'center'
+          }}>
+            The Key Difference
+          </p>
+          <p style={{
+            fontSize: '16px',
+            color: '#cbd5e1',
+            lineHeight: '1.8',
+            textAlign: 'center'
+          }}>
+            Other GPS trackers just show you a line on a map. RacePilot shows you a line on a map AND tells you exactly what you did wrong, why it was wrong, and how to fix it. Every session makes you faster because you know precisely what to work on next time.
+          </p>
         </div>
       </section>
 
