@@ -36,7 +36,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(email, password, name, clubCode);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Registration failed');
     } finally {
