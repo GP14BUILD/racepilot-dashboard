@@ -51,7 +51,7 @@ export default function FAQPage() {
     },
     {
       question: "How does the waterproof case protect my equipment?",
-      answer: "The NANUK Nano 310 case is IP67 rated - fully waterproof and crushproof. Each package includes custom-cut foam inserts designed to fit your specific phone model and the Garmin GLO 2 securely. The case features an extremely strong attachment strap that will keep it securely mounted to your mast even during harsh capsizes. No need to worry about losing your equipment in rough conditions."
+      answer: "The NANUK Nano 310 case is IP67 rated - fully waterproof and crushproof. The case also floats, providing an extra layer of protection if it ever comes free during a capsize. Each package includes custom-cut foam inserts designed to fit your specific phone model and the Garmin GLO 2 securely. The case features an extremely strong attachment strap that will keep it securely mounted to your mast even during harsh capsizes. No need to worry about losing your equipment in rough conditions."
     },
     {
       question: "Can I export my data?",

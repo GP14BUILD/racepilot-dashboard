@@ -476,7 +476,7 @@ export default function ShopPage() {
             },
             {
               q: "Is the hardware waterproof?",
-              a: "The Garmin GLO 2 is water-resistant (IPX7), and it's housed in the NANUK Nano 310 case which is fully waterproof (IP67). Each package includes custom-cut foam inserts for your phone model and Garmin GLO 2, ensuring a secure fit. The case features an extremely strong attachment strap that keeps everything secure even during harsh capsizes. The Calypso wind sensor is marine-rated and weatherproof."
+              a: "The Garmin GLO 2 is water-resistant (IPX7), and it's housed in the NANUK Nano 310 case which is fully waterproof (IP67) and floats. Each package includes custom-cut foam inserts for your phone model and Garmin GLO 2, ensuring a secure fit. The case features an extremely strong attachment strap that keeps everything secure even during harsh capsizes. The Calypso wind sensor is marine-rated and weatherproof."
             },
             {
               q: "How do I mount the GPS on my mast?",
