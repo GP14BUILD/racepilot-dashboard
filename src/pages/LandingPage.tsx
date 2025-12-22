@@ -273,7 +273,7 @@ export default function LandingPage() {
                 Automatic Analysis After Each Sail
               </h3>
               <p style={{ color: '#cbd5e1', lineHeight: '1.8', fontSize: '16px', marginBottom: '12px' }}>
-                When you finish and sync your session, our intelligent analytics system goes to work. It automatically identifies every maneuver you performed - tacks, gybes, mark roundings, starts - without you tagging anything manually. For each maneuver, the system measures:
+                When you finish and sync your session, our intelligent analytics system goes to work. Set up your race course marks beforehand and the system automatically tracks mark roundings, layline efficiency, and strategic decisions relative to the actual course. It identifies every maneuver you performed - tacks, gybes, mark roundings, starts - without you tagging anything manually. For each maneuver, the system measures:
               </p>
               <ul style={{ color: '#94a3b8', lineHeight: '1.8', fontSize: '16px', paddingLeft: '20px' }}>
                 <li>How much speed you lost during the tack</li>
