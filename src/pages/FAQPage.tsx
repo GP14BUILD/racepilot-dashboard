@@ -50,6 +50,10 @@ export default function FAQPage() {
       answer: "The Garmin GLO 2 battery lasts 13+ hours on a single charge - more than enough for a full day of racing. It charges via USB and comes with a charging cable. The NANUK waterproof case protects it from the elements, and the RAM Mount system makes it easy to mount on your mast."
     },
     {
+      question: "How does the waterproof case protect my equipment?",
+      answer: "The NANUK Nano 310 case is IP67 rated - fully waterproof and crushproof. Each package includes custom-cut foam inserts designed to fit your specific phone model and the Garmin GLO 2 securely. The case features an extremely strong attachment strap that will keep it securely mounted to your mast even during harsh capsizes. No need to worry about losing your equipment in rough conditions."
+    },
+    {
       question: "Can I export my data?",
       answer: "Yes! You can export your GPS tracks as GPX files, and download session data as CSV for analysis in external tools. Your data is yours - we believe in data portability and interoperability with other sailing analytics tools."
     },
