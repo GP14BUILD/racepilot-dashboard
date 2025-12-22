@@ -198,6 +198,68 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Video Demo Section */}
+      <section style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '80px 24px'
+      }}>
+        <h2 style={{
+          fontSize: '42px',
+          fontWeight: '800',
+          marginBottom: '16px',
+          textAlign: 'center',
+          background: 'linear-gradient(to right, #ffffff, #60a5fa)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent'
+        }}>
+          See RacePilot in Action
+        </h2>
+        <p style={{
+          fontSize: '18px',
+          color: '#94a3b8',
+          textAlign: 'center',
+          marginBottom: '48px'
+        }}>
+          Watch how easy it is to track and analyze your sailing sessions
+        </p>
+
+        <div style={{
+          maxWidth: '400px',
+          margin: '0 auto',
+          position: 'relative',
+          background: 'rgba(30, 41, 59, 0.5)',
+          borderRadius: '24px',
+          padding: '24px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)'
+        }}>
+          <div style={{
+            position: 'relative',
+            paddingBottom: '177.78%', // 9:16 aspect ratio for YouTube Shorts
+            height: 0,
+            overflow: 'hidden',
+            borderRadius: '16px',
+            background: '#000'
+          }}>
+            <iframe
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                border: 'none'
+              }}
+              src="https://www.youtube.com/embed/xu637xR6C9k"
+              title="RacePilot App Walkthrough"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </section>
+
       {/* How It Works - Session Recording & Improvement Tracking */}
       <section style={{
         maxWidth: '1100px',
