@@ -13,6 +13,7 @@ import RaceReplayPage from './pages/RaceReplayPage';
 import ClubsPage from './pages/ClubsPage';
 import SubscriptionPage from './pages/SubscriptionPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import AdminPage from './pages/AdminPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -97,22 +98,40 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                   Dashboard
                 </Link>
                 {(user.role === 'admin' || user.role === 'club_admin') && (
-                  <Link
-                    to="/clubs"
-                    style={{
-                      padding: '8px 16px',
-                      color: '#e2e8f0',
-                      textDecoration: 'none',
-                      borderRadius: '6px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      transition: 'background 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                  >
-                    Clubs
-                  </Link>
+                  <>
+                    <Link
+                      to="/clubs"
+                      style={{
+                        padding: '8px 16px',
+                        color: '#e2e8f0',
+                        textDecoration: 'none',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                      Clubs
+                    </Link>
+                    <Link
+                      to="/admin"
+                      style={{
+                        padding: '8px 16px',
+                        color: '#e2e8f0',
+                        textDecoration: 'none',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                      Admin
+                    </Link>
+                  </>
                 )}
                 <Link
                   to="/subscription"
@@ -226,6 +245,13 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <SubscriptionPage />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <AdminPage />
               </AppLayout>
             </ProtectedRoute>
           } />
