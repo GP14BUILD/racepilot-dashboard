@@ -127,6 +127,13 @@ export default function AdminPage() {
     }
   };
 
+  const copyClubCode = () => {
+    // For CLUB Sailing Club, the code is "CLUB"
+    const clubCode = "CLUB";
+    navigator.clipboard.writeText(clubCode);
+    alert(`Club code "${clubCode}" copied to clipboard!`);
+  };
+
   return (
     <div>
       {/* Header */}
@@ -140,6 +147,40 @@ export default function AdminPage() {
           {filteredUsers.length} {filteredUsers.length === 1 ? 'user' : 'users'}
           {user.club_name && ` in ${user.club_name}`}
         </p>
+      </div>
+
+      {/* Club Info & Invite Section */}
+      <div className="glass-dark p-6 rounded-xl mb-6 border border-ocean-500/30">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
+              <span>🏆</span>
+              <span>{user.club_name}</span>
+            </h2>
+            <p className="text-slate-400 text-sm mb-4">
+              Invite users to join your club by sharing the club code below
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700">
+                <span className="text-xs text-slate-500 uppercase">Club Code</span>
+                <div className="text-2xl font-bold text-ocean-400 font-mono">CLUB</div>
+              </div>
+              <button
+                onClick={copyClubCode}
+                className="px-4 py-2 bg-ocean-600 hover:bg-ocean-700 rounded-lg transition flex items-center gap-2"
+              >
+                <span>📋</span>
+                <span>Copy Code</span>
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 mt-3">
+              Share this code with new users so they can register at{' '}
+              <a href="https://race-pilot.app/register" className="text-ocean-400 hover:underline">
+                race-pilot.app/register
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Filters */}
