@@ -610,10 +610,10 @@ export default function LandingPage() {
                 ✓ Everything in Starter, plus:
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                ✓ Calypso Ultrasonic Wind Sensor
+                ✓ Calypso Ultrasonic Wind Sensor (CMI1006)
               </li>
-<li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                ✓ Premium RAM Mounting System
+              <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
+                ✓ CMI1028 Stainless Steel Mast Mount Bracket
               </li>
               <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
                 ✓ 12 Months Subscription

@@ -23,7 +23,11 @@ export default function FAQPage() {
     },
     {
       question: "What wind sensors are compatible?",
-      answer: "RacePilot works with Bluetooth wind sensors like the Calypso Ultrasonic Portable. These connect directly to your phone and record True Wind Angle, True Wind Speed, and Apparent Wind data during your session. The wind data integrates seamlessly with your GPS track for post-race analysis."
+      answer: "RacePilot works with Bluetooth wind sensors like the Calypso Ultrasonic Portable (CMI1006). These connect directly to your phone and record True Wind Angle, True Wind Speed, and Apparent Wind data during your session. The wind data integrates seamlessly with your GPS track for post-race analysis. Our Pro Package includes the Calypso sensor with the lightweight CMI1028 mast mount bracket."
+    },
+    {
+      question: "How do I mount the wind sensor on my mast?",
+      answer: "The Pro Package includes the Calypso CMI1028 Mast Mount - a lightweight stainless steel bracket specifically designed for dinghy masts. The bracket can be riveted directly to your mast for a permanent, low-profile installation that adds minimal weight. This mounting solution is ideal for dinghies and small boats where weight aloft matters. For larger boats, alternative mounting options are available."
     },
     {
       question: "Does RacePilot work offline?",
@@ -220,7 +224,7 @@ export default function FAQPage() {
           Get in touch and we'll get back to you as soon as possible
         </p>
         <a
-          href="mailto:gp14build@gmail.com"
+          href="mailto:info@race-pilot.app"
           style={{
             padding: '16px 32px',
             background: 'linear-gradient(135deg, #3b82f6, #2563eb)',

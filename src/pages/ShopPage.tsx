@@ -246,10 +246,10 @@ export default function ShopPage() {
                     ✓ Everything in Starter Package, plus:
                   </li>
                   <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                    ✓ Calypso Ultrasonic Wind Sensor
+                    ✓ Calypso Ultrasonic Wind Sensor (CMI1006)
                   </li>
                   <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                    ✓ Premium RAM Mounting System
+                    ✓ CMI1028 Stainless Steel Mast Mount Bracket
                   </li>
                   <li style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
                     ✓ 12 Months Subscription
@@ -272,7 +272,7 @@ export default function ShopPage() {
                   <p><strong style={{ color: '#fff' }}>Wind Range:</strong> 0-50 m/s (0-100 knots)</p>
                   <p><strong style={{ color: '#fff' }}>Wind Sensor Type:</strong> Ultrasonic (no moving parts)</p>
                   <p><strong style={{ color: '#fff' }}>Data Output:</strong> TWA, TWS, AWS, AWA in real-time</p>
-                  <p><strong style={{ color: '#fff' }}>Mounting:</strong> Heavy-duty RAM ball system with multiple joints</p>
+                  <p><strong style={{ color: '#fff' }}>Mounting:</strong> Lightweight stainless steel bracket (riveted to mast)</p>
                   <p><strong style={{ color: '#fff' }}>Sensor Battery:</strong> Rechargeable, 20+ hours</p>
                 </div>
               </div>
@@ -481,6 +481,10 @@ export default function ShopPage() {
             {
               q: "How do I mount the GPS on my mast?",
               a: "The RAM mount system includes a universal clamp that fits masts from 25-40mm diameter. Installation takes about 5 minutes with no tools required."
+            },
+            {
+              q: "How is the wind sensor mounted?",
+              a: "The Pro Package includes the Calypso CMI1028 Mast Mount - a lightweight stainless steel bracket designed for dinghy masts. The bracket is riveted directly to the mast for a secure, low-profile installation that minimizes weight aloft. Perfect for dinghies and small boats where performance matters."
             },
             {
               q: "Does this work offline on the water?",
