@@ -1,6 +1,21 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function LandingPage() {
+  const [showCookieConsent, setShowCookieConsent] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem('cookieConsent');
+    if (!consent) {
+      setShowCookieConsent(true);
+    }
+  }, []);
+
+  const acceptCookies = () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    setShowCookieConsent(false);
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -743,11 +758,65 @@ export default function LandingPage() {
               Dashboard Login
             </Link>
           </div>
+          <div style={{ marginTop: '24px', marginBottom: '16px', color: '#94a3b8', fontSize: '14px' }}>
+            <p style={{ margin: '8px 0' }}>
+              Email: <a href="mailto:info@race-pilot.app" style={{ color: '#60a5fa', textDecoration: 'none' }}>info@race-pilot.app</a>
+            </p>
+            <p style={{ margin: '8px 0' }}>
+              Tel: <a href="tel:+442894479569" style={{ color: '#60a5fa', textDecoration: 'none' }}>+44 28 9447 9569</a>
+            </p>
+          </div>
           <p style={{ fontSize: '14px' }}>
             © 2025 RacePilot. Professional GPS Sailing Analytics.
           </p>
         </div>
       </footer>
+
+      {/* Cookie Consent */}
+      {showCookieConsent && (
+        <div style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          background: 'rgba(15, 23, 42, 0.98)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          padding: '20px',
+          zIndex: 1000,
+          boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.5)'
+        }}>
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '20px',
+            flexWrap: 'wrap'
+          }}>
+            <p style={{ margin: 0, color: '#e2e8f0', fontSize: '14px', flex: 1 }}>
+              We use cookies to improve your experience and analyze site traffic. By continuing to use our site, you consent to our use of cookies.
+            </p>
+            <button
+              onClick={acceptCookies}
+              style={{
+                padding: '12px 24px',
+                background: 'linear-gradient(to right, #38bdf8, #0284c7)',
+                border: 'none',
+                borderRadius: '8px',
+                color: '#fff',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Accept
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

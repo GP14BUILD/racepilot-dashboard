@@ -191,7 +191,7 @@ export default function FeaturesPage() {
             borderRadius: '20px',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '20px' }}>🌊</div>
+            <div style={{ fontSize: '48px', marginBottom: '20px' }}>💨</div>
             <h2 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '16px' }}>
               Real-time Wind Data
             </h2>

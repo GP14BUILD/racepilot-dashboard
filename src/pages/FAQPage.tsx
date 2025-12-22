@@ -51,7 +51,7 @@ export default function FAQPage() {
     },
     {
       question: "Do you ship internationally?",
-      answer: "We're based in the UK and currently ship within the UK and EU. International shipping to other regions is available on request. Contact us at gp14build@gmail.com for international orders."
+      answer: "We're based in the UK and currently ship within the UK and EU. International shipping to other regions is available on request. Contact us at info@race-pilot.app for international orders."
     },
     {
       question: "What's your return policy?",
@@ -59,7 +59,7 @@ export default function FAQPage() {
     },
     {
       question: "How do I get started?",
-      answer: "1. Order a hardware package (or use your existing GPS device). 2. Download the RacePilot mobile app from Google Play or App Store. 3. Create an account and pair your GPS device. 4. Start recording sessions! The AI will automatically analyze your maneuvers and provide coaching insights. View detailed analytics on the web dashboard at race-pilot.app."
+      answer: "1. Order a hardware package (or use your existing GPS device). 2. Download the RacePilot mobile app from Google Play or App Store. 3. Create an account and pair your GPS device. 4. Start recording sessions! Our intelligent analytics system will automatically analyze your maneuvers and provide coaching insights. View detailed analytics on the web dashboard at race-pilot.app."
     }
   ];
 
