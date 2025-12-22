@@ -65,19 +65,16 @@ export default function RegisterPage() {
       }}>
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{
-            width: '64px',
-            height: '64px',
-            background: 'linear-gradient(to bottom right, #38bdf8, #0284c7)',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '32px',
-            margin: '0 auto 16px'
-          }}>
-            <span>⛵</span>
-          </div>
+          <img
+            src="https://raw.githubusercontent.com/GP14BUILD/racepilotimages/main/ChatGPT%20Image%20Nov%208%2C%202025%2C%2002_34_49%20PM.png"
+            alt="RacePilot Logo"
+            style={{
+              width: '80px',
+              height: '80px',
+              margin: '0 auto 16px',
+              display: 'block'
+            }}
+          />
           <h1 style={{
             fontSize: '28px',
             fontWeight: 'bold',
