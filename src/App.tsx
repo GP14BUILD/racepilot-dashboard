@@ -14,6 +14,7 @@ import ClubsPage from './pages/ClubsPage';
 import SubscriptionPage from './pages/SubscriptionPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import AdminPage from './pages/AdminPage';
+import SuperAdminPage from './pages/SuperAdminPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -132,6 +133,26 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                       Admin
                     </Link>
                   </>
+                )}
+                {user.role === 'admin' && (
+                  <Link
+                    to="/super-admin"
+                    style={{
+                      padding: '8px 16px',
+                      color: '#e2e8f0',
+                      textDecoration: 'none',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      transition: 'background 0.2s',
+                      background: 'linear-gradient(to right, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2))',
+                      border: '1px solid rgba(168, 85, 247, 0.3)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(to right, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'linear-gradient(to right, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2))'}
+                  >
+                    ⚡ Super Admin
+                  </Link>
                 )}
                 <Link
                   to="/subscription"
@@ -252,6 +273,13 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <AdminPage />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/super-admin" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <SuperAdminPage />
               </AppLayout>
             </ProtectedRoute>
           } />
