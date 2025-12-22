@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { loadGoogleAnalytics, trackEmailClick, trackPhoneClick, trackCTAClick } from '../utils/analytics';
 
 export default function LandingPage() {
   const [showCookieConsent, setShowCookieConsent] = useState(false);
@@ -8,12 +9,17 @@ export default function LandingPage() {
     const consent = localStorage.getItem('cookieConsent');
     if (!consent) {
       setShowCookieConsent(true);
+    } else {
+      // Load GA4 if consent already given
+      loadGoogleAnalytics();
     }
   }, []);
 
   const acceptCookies = () => {
     localStorage.setItem('cookieConsent', 'accepted');
     setShowCookieConsent(false);
+    // Load GA4 after accepting cookies
+    loadGoogleAnalytics();
   };
 
   return (
@@ -129,6 +135,7 @@ export default function LandingPage() {
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a
             href="#packages"
+            onClick={() => trackCTAClick('View Packages')}
             style={{
               padding: '16px 32px',
               background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
@@ -149,6 +156,7 @@ export default function LandingPage() {
             href="https://play.google.com/apps/testing/com.racepilot.mobile"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackCTAClick('Download App')}
             style={{
               padding: '16px 32px',
               background: 'rgba(255, 255, 255, 0.1)',
@@ -760,10 +768,10 @@ export default function LandingPage() {
           </div>
           <div style={{ marginTop: '24px', marginBottom: '16px', color: '#94a3b8', fontSize: '14px' }}>
             <p style={{ margin: '8px 0' }}>
-              Email: <a href="mailto:info@race-pilot.app" style={{ color: '#60a5fa', textDecoration: 'none' }}>info@race-pilot.app</a>
+              Email: <a href="mailto:info@race-pilot.app" onClick={trackEmailClick} style={{ color: '#60a5fa', textDecoration: 'none' }}>info@race-pilot.app</a>
             </p>
             <p style={{ margin: '8px 0' }}>
-              Tel: <a href="tel:+442894479569" style={{ color: '#60a5fa', textDecoration: 'none' }}>+44 28 9447 9569</a>
+              Tel: <a href="tel:+442894479569" onClick={trackPhoneClick} style={{ color: '#60a5fa', textDecoration: 'none' }}>+44 28 9447 9569</a>
             </p>
           </div>
           <p style={{ fontSize: '14px' }}>
