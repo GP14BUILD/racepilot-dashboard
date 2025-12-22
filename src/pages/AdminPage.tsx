@@ -31,7 +31,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('https://api.race-pilot.app/api/auth/admin/users', {
+      const response = await fetch('https://api.race-pilot.app/auth/admin/users', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
