@@ -210,7 +210,7 @@ export default function ShopPage() {
                 Complete professional system with wind data
               </p>
               <div style={{ fontSize: '56px', fontWeight: '800', color: '#60a5fa', marginBottom: '8px' }}>
-                $749
+                $849
               </div>
               <p style={{ color: '#cbd5e1', fontSize: '14px', marginBottom: '32px' }}>
                 One-time purchase + 12-month subscription

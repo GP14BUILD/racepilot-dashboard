@@ -110,7 +110,7 @@ export default function SessionPage() {
         <div className="text-red-400 text-5xl mb-4">⚠️</div>
         <h2 className="text-xl font-bold mb-2">Session Not Found</h2>
         <p className="text-slate-400 mb-4">{error}</p>
-        <Link to="/" className="px-4 py-2 bg-ocean-600 hover:bg-ocean-700 rounded-lg transition inline-block">
+        <Link to="/dashboard" className="px-4 py-2 bg-ocean-600 hover:bg-ocean-700 rounded-lg transition inline-block">
           Back to Sessions
         </Link>
       </div>
@@ -136,7 +136,7 @@ export default function SessionPage() {
     <div>
       {/* Back Button */}
       <Link
-        to="/"
+        to="/dashboard"
         className="inline-flex items-center space-x-2 text-slate-400 hover:text-white mb-6 transition"
       >
         <span>←</span>

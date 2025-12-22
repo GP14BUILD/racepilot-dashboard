@@ -602,7 +602,7 @@ export default function LandingPage() {
               Pro Package
             </h3>
             <div style={{ fontSize: '48px', fontWeight: '800', color: '#60a5fa', marginBottom: '24px' }}>
-              $749
+              $849
             </div>
 
             <ul style={{ listStyle: 'none', padding: 0, marginBottom: '32px' }}>

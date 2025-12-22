@@ -105,7 +105,7 @@ export default function SubscriptionPage() {
             <p className="text-slate-400">Manage your RacePilot subscription</p>
           </div>
           <Link
-            to="/"
+            to="/dashboard"
             className="px-4 py-2 bg-ocean-600 hover:bg-ocean-700 rounded-lg transition"
           >
             ← Back to Dashboard
