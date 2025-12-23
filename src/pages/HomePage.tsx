@@ -132,7 +132,7 @@ export default function HomePage() {
                     <h3 className="font-semibold text-lg group-hover:text-ocean-400 transition">
                       {session.title}
                     </h3>
-                    <p className="text-sm text-slate-400">Session #{session.id}</p>
+                    <p className="text-sm text-slate-400">Session #{session.session_number}</p>
                   </div>
                 </div>
                 <div className="text-ocean-400">→</div>
