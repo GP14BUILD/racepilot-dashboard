@@ -251,7 +251,7 @@ export default function LandingPage() {
                 height: '100%',
                 border: 'none'
               }}
-              src="https://www.youtube.com/embed/aDsOVg7LARo"
+              src="https://www.youtube.com/embed/xu637xR6C9k"
               title="RacePilot App Walkthrough"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
