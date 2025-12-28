@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -15,8 +15,66 @@ export default function LoginPage() {
   const [resetError, setResetError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
   const API_URL = 'https://api.race-pilot.app';
+
+  // Handle Google Sign-in response
+  const handleGoogleSignIn = async (response: any) => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/auth/google-signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          credential: response.credential
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || 'Google sign-in failed');
+      }
+
+      // Store token and user data
+      localStorage.setItem('auth_token', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      // Navigate to dashboard
+      window.location.href = '/dashboard';
+    } catch (err: any) {
+      setError(err.message || 'Google sign-in failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initialize Google Sign-in button
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.google) return;
+
+    window.google.accounts.id.initialize({
+      client_id: '48572885130-9pofupt5pdodpr9kam3mt9f13eqvo53v.apps.googleusercontent.com',
+      callback: handleGoogleSignIn,
+    });
+
+    if (googleButtonRef.current) {
+      window.google.accounts.id.renderButton(
+        googleButtonRef.current,
+        {
+          theme: 'filled_blue',
+          size: 'large',
+          width: googleButtonRef.current.offsetWidth,
+          text: 'signin_with',
+        }
+      );
+    }
+  }, []);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -242,6 +300,21 @@ export default function LoginPage() {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        {/* Divider */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          margin: '24px 0'
+        }}>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
+          <span style={{ color: '#64748b', fontSize: '14px' }}>OR</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
+        </div>
+
+        {/* Google Sign-in Button */}
+        <div ref={googleButtonRef} style={{ width: '100%' }} />
 
         {/* Footer Note */}
         <p style={{

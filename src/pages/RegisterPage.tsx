@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -12,8 +12,83 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showClubCodeModal, setShowClubCodeModal] = useState(false);
+  const [googleCredential, setGoogleCredential] = useState('');
+  const [googleClubCode, setGoogleClubCode] = useState('');
   const { register } = useAuth();
   const navigate = useNavigate();
+  const googleButtonRef = useRef<HTMLDivElement>(null);
+
+  const API_URL = 'https://api.race-pilot.app';
+
+  // Handle Google Sign-in response - show club code modal
+  const handleGoogleSignIn = async (response: any) => {
+    setGoogleCredential(response.credential);
+    setShowClubCodeModal(true);
+  };
+
+  // Complete Google registration with club code
+  const completeGoogleRegistration = async () => {
+    if (!googleClubCode.trim()) {
+      setError('Club code is required');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/auth/google-signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          credential: googleCredential,
+          club_code: googleClubCode
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || 'Google registration failed');
+      }
+
+      // Store token and user data
+      localStorage.setItem('auth_token', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      // Navigate to dashboard
+      window.location.href = '/dashboard';
+    } catch (err: any) {
+      setError(err.message || 'Google registration failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initialize Google Sign-in button
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.google) return;
+
+    window.google.accounts.id.initialize({
+      client_id: '48572885130-9pofupt5pdodpr9kam3mt9f13eqvo53v.apps.googleusercontent.com',
+      callback: handleGoogleSignIn,
+    });
+
+    if (googleButtonRef.current) {
+      window.google.accounts.id.renderButton(
+        googleButtonRef.current,
+        {
+          theme: 'filled_blue',
+          size: 'large',
+          width: googleButtonRef.current.offsetWidth,
+          text: 'signup_with',
+        }
+      );
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -353,6 +428,21 @@ export default function RegisterPage() {
           </button>
         </form>
 
+        {/* Divider */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          margin: '24px 0'
+        }}>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
+          <span style={{ color: '#64748b', fontSize: '14px' }}>OR</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
+        </div>
+
+        {/* Google Sign-in Button */}
+        <div ref={googleButtonRef} style={{ width: '100%' }} />
+
         {/* Sign In Link */}
         <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px', color: '#94a3b8' }}>
           Already have an account?{' '}
@@ -368,6 +458,135 @@ export default function RegisterPage() {
           </Link>
         </p>
       </div>
+
+      {/* Club Code Modal for Google Sign-in */}
+      {showClubCodeModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.7)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          zIndex: 1000
+        }} onClick={() => setShowClubCodeModal(false)}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(30, 41, 59, 0.95)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '32px',
+              width: '100%',
+              maxWidth: '400px',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
+            }}
+          >
+            <h2 style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              marginBottom: '8px',
+              color: '#fff'
+            }}>
+              Enter Club Code
+            </h2>
+            <p style={{
+              color: '#94a3b8',
+              fontSize: '14px',
+              marginBottom: '24px'
+            }}>
+              Please enter your sailing club's registration code to complete sign-up.
+            </p>
+
+            {error && (
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                borderRadius: '8px',
+                padding: '12px',
+                marginBottom: '16px',
+                color: '#fca5a5',
+                fontSize: '14px'
+              }}>
+                {error}
+              </div>
+            )}
+
+            <input
+              type="text"
+              value={googleClubCode}
+              onChange={(e) => setGoogleClubCode(e.target.value)}
+              placeholder="YACHT123"
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: 'rgba(15, 23, 42, 0.6)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                color: '#fff',
+                fontSize: '14px',
+                marginBottom: '24px',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  completeGoogleRegistration();
+                }
+              }}
+            />
+
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  setShowClubCodeModal(false);
+                  setGoogleClubCode('');
+                  setError('');
+                }}
+                disabled={loading}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'rgba(100, 116, 139, 0.2)',
+                  border: '1px solid rgba(100, 116, 139, 0.3)',
+                  borderRadius: '8px',
+                  color: '#cbd5e1',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  opacity: loading ? 0.5 : 1
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={completeGoogleRegistration}
+                disabled={loading}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: loading ? 'rgba(56, 189, 248, 0.5)' : 'linear-gradient(to right, #38bdf8, #0284c7)',
+                  border: 'none',
+                  borderRadius: '8px',
+                  color: '#fff',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  opacity: loading ? 0.7 : 1
+                }}
+              >
+                {loading ? 'Registering...' : 'Continue'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
