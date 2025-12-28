@@ -4,11 +4,21 @@ import { motion } from 'framer-motion';
 import { getSessions } from '../api';
 import type { Session } from '../types';
 import { format } from 'date-fns';
+import OnboardingGuide from '../components/OnboardingGuide';
 
 export default function HomePage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    // Check if user has completed onboarding
+    const onboardingComplete = localStorage.getItem('onboarding_complete');
+    if (!onboardingComplete) {
+      setShowOnboarding(true);
+    }
+  }, []);
 
   useEffect(() => {
     loadSessions();
@@ -161,6 +171,11 @@ export default function HomePage() {
           </motion.div>
         ))}
       </div>
+
+      {/* Onboarding Guide for first-time users */}
+      {showOnboarding && (
+        <OnboardingGuide onComplete={() => setShowOnboarding(false)} />
+      )}
     </div>
   );
 }

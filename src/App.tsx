@@ -15,6 +15,7 @@ import SubscriptionPage from './pages/SubscriptionPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import AdminPage from './pages/AdminPage';
 import SuperAdminPage from './pages/SuperAdminPage';
+import FeedbackPage from './pages/FeedbackPage';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -152,6 +153,22 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                 >
                   💳 Subscription
                 </Link>
+                <Link
+                  to="/feedback"
+                  style={{
+                    padding: '8px 16px',
+                    color: '#e2e8f0',
+                    textDecoration: 'none',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  💬 Feedback
+                </Link>
               </nav>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '14px', fontWeight: '500', color: '#e2e8f0' }}>
@@ -262,6 +279,13 @@ function App() {
             <ProtectedRoute>
               <AppLayout>
                 <SuperAdminPage />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/feedback" element={
+            <ProtectedRoute>
+              <AppLayout>
+                <FeedbackPage />
               </AppLayout>
             </ProtectedRoute>
           } />
