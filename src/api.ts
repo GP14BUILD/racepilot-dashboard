@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Session, TrackPoint, RaceCourse, Maneuver, ManeuverStats, AnomalyDetectionResult, CoachingRecommendation, CoachingAnalysisResult, WindShift, WindPattern } from './types';
+import type { Session, TrackPoint, RaceCourse, Maneuver, ManeuverStats, AnomalyDetectionResult, CoachingRecommendation, CoachingAnalysisResult, WindShift, WindPattern, BoatClass, Boat } from './types';
 
 const API_URL = 'https://api.race-pilot.app';
 
@@ -150,6 +150,76 @@ export const getSubscriptionStatus = async (): Promise<SubscriptionStatus> => {
 
 export const cancelSubscription = async (): Promise<{ message: string }> => {
   const response = await api.post('/payments/cancel-subscription');
+  return response.data;
+};
+
+// Boat Class APIs
+export const getBoatClasses = async (): Promise<BoatClass[]> => {
+  const response = await api.get('/boat-classes');
+  return response.data;
+};
+
+export const getBoatClass = async (id: number): Promise<BoatClass> => {
+  const response = await api.get(`/boat-classes/${id}`);
+  return response.data;
+};
+
+export const createBoatClass = async (data: Partial<BoatClass>): Promise<BoatClass> => {
+  const response = await api.post('/boat-classes', data);
+  return response.data;
+};
+
+export const updateBoatClass = async (id: number, data: Partial<BoatClass>): Promise<BoatClass> => {
+  const response = await api.put(`/boat-classes/${id}`, data);
+  return response.data;
+};
+
+export const deleteBoatClass = async (id: number): Promise<{ message: string }> => {
+  const response = await api.delete(`/boat-classes/${id}`);
+  return response.data;
+};
+
+// Boat APIs
+export const getBoats = async (): Promise<Boat[]> => {
+  const response = await api.get('/auth/boats');
+  return response.data;
+};
+
+export const createBoat = async (data: { name?: string; sail_number: string; boat_class_id?: number; is_default?: boolean }): Promise<Boat> => {
+  const response = await api.post('/auth/boats', data);
+  return response.data;
+};
+
+export const updateBoat = async (id: number, data: Partial<Boat>): Promise<Boat> => {
+  const response = await api.put(`/auth/boats/${id}`, data);
+  return response.data;
+};
+
+export const deleteBoat = async (id: number): Promise<{ message: string }> => {
+  const response = await api.delete(`/auth/boats/${id}`);
+  return response.data;
+};
+
+// Conversational AI Coach APIs
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatRequest {
+  session_id: number;
+  question: string;
+  conversation_history?: ChatMessage[];
+}
+
+export interface ChatResponse {
+  answer: string;
+  confidence: string;
+  data_sources_used: string[];
+}
+
+export const askRaceCoach = async (data: ChatRequest): Promise<ChatResponse> => {
+  const response = await api.post('/ai/chat/ask', data);
   return response.data;
 };
 

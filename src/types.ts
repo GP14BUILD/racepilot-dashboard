@@ -177,3 +177,53 @@ export interface WindPattern {
   avg_shift_magnitude: number;
   wind_stability_score: number;
 }
+
+export interface BoatClass {
+  id: number;
+  name: string;
+  portsmouth_yardstick: number | null;
+
+  // Upwind defaults (degrees from true wind)
+  typical_upwind_angle_light: number | null;
+  typical_upwind_angle_medium: number | null;
+  typical_upwind_angle_fresh: number | null;
+  typical_upwind_angle_strong: number | null;
+
+  // Downwind defaults (degrees from true wind)
+  typical_downwind_angle_light: number | null;
+  typical_downwind_angle_medium: number | null;
+  typical_downwind_angle_fresh: number | null;
+  typical_downwind_angle_strong: number | null;
+
+  // VMG targets (knots)
+  typical_upwind_vmg_light: number | null;
+  typical_upwind_vmg_medium: number | null;
+  typical_upwind_vmg_fresh: number | null;
+  typical_upwind_vmg_strong: number | null;
+
+  typical_downwind_vmg_light: number | null;
+  typical_downwind_vmg_medium: number | null;
+  typical_downwind_vmg_fresh: number | null;
+  typical_downwind_vmg_strong: number | null;
+
+  // Hull characteristics
+  waterline_length_m: number | null;
+  hull_speed_max_kn: number | null;
+
+  // Metadata
+  description: string | null;
+  is_custom: boolean;
+  created_at: string;
+}
+
+export interface Boat {
+  id: number;
+  user_id: number;
+  name: string | null;
+  klass: string | null; // Legacy field
+  sail_number: string;
+  boat_class_id: number | null;
+  is_default: boolean;
+  created_at: string;
+  boat_class?: BoatClass;
+}

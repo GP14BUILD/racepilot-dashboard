@@ -146,10 +146,45 @@ export default function CoachingPanel({ sessionId, onRecommendationsLoaded }: Co
   const mediumCount = activeRecommendations.filter(r => r.priority === 'medium').length;
   const lowCount = activeRecommendations.filter(r => r.priority === 'low').length;
 
+  // Determine data source from recommendations
+  const getDataSource = () => {
+    if (activeRecommendations.length === 0) return null;
+
+    // Check the first recommendation's context for data source info
+    const firstRec = activeRecommendations[0];
+    if (firstRec.context) {
+      const { data_source, boat_class } = firstRec.context;
+
+      if (data_source === 'GPS learned') {
+        return { type: 'learned', label: 'GPS Learned Data', color: 'bg-green-900/30 text-green-400 border-green-700/50' };
+      } else if (boat_class) {
+        return { type: 'defaults', label: `${boat_class} Defaults`, color: 'bg-blue-900/30 text-blue-400 border-blue-700/50' };
+      }
+    }
+
+    return null;
+  };
+
+  const dataSource = getDataSource();
+
   return (
     <div className="glass-dark p-6 rounded-xl">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold">💡 AI Coaching</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-bold">💡 AI Coaching</h2>
+          {dataSource && (
+            <div
+              className={`px-3 py-1 rounded-full text-xs font-semibold border ${dataSource.color}`}
+              title={
+                dataSource.type === 'learned'
+                  ? 'Coaching based on your personalized sailing data'
+                  : 'Coaching based on typical performance for your boat class'
+              }
+            >
+              {dataSource.label}
+            </div>
+          )}
+        </div>
         <button
           onClick={handleAnalyze}
           disabled={analyzing}

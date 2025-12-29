@@ -12,6 +12,7 @@ import LaylinesOverlay from '../components/LaylinesOverlay';
 import ManeuverStatsPanel from '../components/ManeuverStatsPanel';
 import AnomalyPanel from '../components/AnomalyPanel';
 import CoachingPanel from '../components/CoachingPanel';
+import RaceCoachChat from '../components/RaceCoachChat';
 import WindPatternPanel from '../components/WindPatternPanel';
 import VideoUpload from '../components/VideoUpload';
 import L from 'leaflet';
@@ -459,6 +460,11 @@ export default function SessionPage() {
 
           {/* AI Coaching Panel */}
           <CoachingPanel
+            sessionId={Number(id)}
+          />
+
+          {/* Conversational AI Race Coach */}
+          <RaceCoachChat
             sessionId={Number(id)}
           />
 
