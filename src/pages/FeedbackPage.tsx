@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
+
 export default function FeedbackPage() {
   const { user } = useAuth();
   const [name, setName] = useState(user?.name || '');
@@ -20,7 +22,7 @@ export default function FeedbackPage() {
 
     try {
       const token = localStorage.getItem('auth_token');
-      const response = await fetch('https://api.race-pilot.app/feedback', {
+      const response = await fetch(`${API_URL}/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

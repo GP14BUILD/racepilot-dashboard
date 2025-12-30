@@ -14,7 +14,7 @@ interface Video {
   created_at: string;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
 
 export default function VideoUpload({ sessionId, onUploadComplete }: VideoUploadProps) {
   const [file, setFile] = useState<File | null>(null);
@@ -32,6 +32,8 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
   const [sessionVideos, setSessionVideos] = useState<Video[]>([]);
   const [showMyVideos, setShowMyVideos] = useState(false);
   const [loadingVideos, setLoadingVideos] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
 
   // Load user's videos and session videos
   useEffect(() => {
@@ -71,6 +73,31 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
       console.error('Failed to load my videos:', err);
     } finally {
       setLoadingVideos(false);
+    }
+  };
+
+  const deleteVideo = async (videoId: number) => {
+    setDeletingId(videoId);
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/videos/${videoId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        // Remove from both lists
+        setSessionVideos(prev => prev.filter(v => v.id !== videoId));
+        setMyVideos(prev => prev.filter(v => v.id !== videoId));
+        setDeleteConfirmId(null);
+      } else {
+        const data = await response.json();
+        setError(data.detail || 'Failed to delete video');
+      }
+    } catch (err) {
+      console.error('Failed to delete video:', err);
+      setError('Failed to delete video');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -179,7 +206,7 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
           <div style={styles.videoList}>
             {sessionVideos.map(video => (
               <div key={video.id} style={styles.videoItem}>
-                <div style={styles.videoIcon}>🎥</div>
+                <div style={styles.videoIcon}>V</div>
                 <div style={styles.videoInfo}>
                   <div style={styles.videoName}>
                     {video.title || video.filename}
@@ -188,6 +215,32 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
                     {formatFileSize(video.file_size)} • {formatDate(video.created_at)}
                   </div>
                 </div>
+                {deleteConfirmId === video.id ? (
+                  <div style={styles.deleteConfirm}>
+                    <span style={styles.deleteConfirmText}>Delete?</span>
+                    <button
+                      style={styles.confirmYes}
+                      onClick={() => deleteVideo(video.id)}
+                      disabled={deletingId === video.id}
+                    >
+                      {deletingId === video.id ? '...' : 'Yes'}
+                    </button>
+                    <button
+                      style={styles.confirmNo}
+                      onClick={() => setDeleteConfirmId(null)}
+                    >
+                      No
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    style={styles.deleteButton}
+                    onClick={() => setDeleteConfirmId(video.id)}
+                    title="Delete video"
+                  >
+                    X
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -213,8 +266,11 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
             <div style={styles.videoList}>
               {myVideos.map(video => (
                 <div key={video.id} style={styles.videoItem}>
-                  <div style={styles.videoIcon}>
-                    {video.session_id === sessionId ? '📹' : '🎥'}
+                  <div style={{
+                    ...styles.videoIcon,
+                    backgroundColor: video.session_id === sessionId ? '#667eea' : '#6b7280'
+                  }}>
+                    V
                   </div>
                   <div style={styles.videoInfo}>
                     <div style={styles.videoName}>
@@ -224,6 +280,32 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
                       Session {video.session_id} • {formatFileSize(video.file_size)} • {formatDate(video.created_at)}
                     </div>
                   </div>
+                  {deleteConfirmId === video.id ? (
+                    <div style={styles.deleteConfirm}>
+                      <span style={styles.deleteConfirmText}>Delete?</span>
+                      <button
+                        style={styles.confirmYes}
+                        onClick={() => deleteVideo(video.id)}
+                        disabled={deletingId === video.id}
+                      >
+                        {deletingId === video.id ? '...' : 'Yes'}
+                      </button>
+                      <button
+                        style={styles.confirmNo}
+                        onClick={() => setDeleteConfirmId(null)}
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      style={styles.deleteButton}
+                      onClick={() => setDeleteConfirmId(video.id)}
+                      title="Delete video"
+                    >
+                      X
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -381,7 +463,17 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid #e5e7eb',
   },
   videoIcon: {
-    fontSize: '24px',
+    width: '32px',
+    height: '32px',
+    borderRadius: '6px',
+    backgroundColor: '#6b7280',
+    color: '#fff',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
   },
   videoInfo: {
     flex: 1,
@@ -527,5 +619,47 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#2E7D32',
     borderRadius: '6px',
     fontSize: '14px',
+  },
+  deleteButton: {
+    padding: '6px 10px',
+    backgroundColor: 'transparent',
+    color: '#9ca3af',
+    border: '1px solid #e5e7eb',
+    borderRadius: '4px',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    flexShrink: 0,
+  },
+  deleteConfirm: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    flexShrink: 0,
+  },
+  deleteConfirmText: {
+    fontSize: '12px',
+    color: '#ef4444',
+    fontWeight: '500',
+  },
+  confirmYes: {
+    padding: '4px 12px',
+    backgroundColor: '#ef4444',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    fontSize: '12px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
+  confirmNo: {
+    padding: '4px 12px',
+    backgroundColor: '#e5e7eb',
+    color: '#374151',
+    border: 'none',
+    borderRadius: '4px',
+    fontSize: '12px',
+    fontWeight: '600',
+    cursor: 'pointer',
   },
 };

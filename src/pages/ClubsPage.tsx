@@ -26,7 +26,7 @@ interface ClubMember {
   last_login?: string;
 }
 
-const API_URL = 'https://api.race-pilot.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
 
 export default function ClubsPage() {
   const { user, token } = useAuth();

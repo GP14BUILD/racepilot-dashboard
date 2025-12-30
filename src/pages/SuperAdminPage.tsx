@@ -25,6 +25,8 @@ interface Club {
   created_at: string;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || '${API_URL}';
+
 export default function SuperAdminPage() {
   const { user } = useAuth();
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -46,7 +48,7 @@ export default function SuperAdminPage() {
       const token = localStorage.getItem('auth_token');
 
       // Load users
-      const usersResponse = await fetch('https://api.race-pilot.app/auth/admin/super/users', {
+      const usersResponse = await fetch('${API_URL}/auth/admin/super/users', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -60,7 +62,7 @@ export default function SuperAdminPage() {
       setUsers(usersData);
 
       // Load clubs
-      const clubsResponse = await fetch('https://api.race-pilot.app/auth/admin/super/clubs', {
+      const clubsResponse = await fetch('${API_URL}/auth/admin/super/clubs', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -85,7 +87,7 @@ export default function SuperAdminPage() {
       setUpdatingUserId(userId);
       const token = localStorage.getItem('auth_token');
 
-      const response = await fetch(`https://api.race-pilot.app/auth/admin/super/users/${userId}/role`, {
+      const response = await fetch(`${API_URL}/auth/admin/super/users/${userId}/role`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

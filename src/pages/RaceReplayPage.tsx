@@ -54,7 +54,7 @@ interface Video {
   created_at: string;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
 
 // Fix Leaflet default marker icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;

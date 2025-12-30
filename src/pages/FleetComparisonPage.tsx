@@ -84,31 +84,35 @@ export default function FleetComparisonPage() {
   const loadSessionPoints = async (sessionsToLoad: Session[]) => {
     const newSessionData = new Map<number, SessionWithPoints>();
 
-    for (let i = 0; i < sessionsToLoad.length; i++) {
-      const session = sessionsToLoad[i];
-      try {
-        const points = await getSessionPoints(session.id);
+    // Load all sessions in parallel for better performance
+    const results = await Promise.allSettled(
+      sessionsToLoad.map(async (session, i) => {
+        try {
+          const points = await getSessionPoints(session.id);
+          return { session, points, index: i, success: true };
+        } catch (err: any) {
+          if (err?.response?.status === 404) {
+            // Session has no points
+            return { session, points: [], index: i, success: true };
+          }
+          console.error(`Failed to load points for session ${session.id}:`, err);
+          return { session, points: [], index: i, success: false };
+        }
+      })
+    );
+
+    // Process results
+    results.forEach((result) => {
+      if (result.status === 'fulfilled' && result.value.success) {
+        const { session, points, index } = result.value;
         newSessionData.set(session.id, {
           session,
           points,
-          color: SESSION_COLORS[i % SESSION_COLORS.length],
+          color: SESSION_COLORS[index % SESSION_COLORS.length],
           visible: true,
         });
-      } catch (err: any) {
-        if (err?.response?.status === 404) {
-          // Session has no points, add it with empty array
-          newSessionData.set(session.id, {
-            session,
-            points: [],
-            color: SESSION_COLORS[i % SESSION_COLORS.length],
-            visible: true,
-          });
-          console.log(`Session ${session.id} has no track points yet`);
-        } else {
-          console.error(`Failed to load points for session ${session.id}:`, err);
-        }
       }
-    }
+    });
 
     setSessionData(newSessionData);
   };
@@ -160,7 +164,6 @@ export default function FleetComparisonPage() {
             visible: true,
           });
           setSessionData(newSessionData);
-          console.log(`Session ${session.id} has no track points yet`);
         } else {
           console.error(`Failed to load points for session ${session.id}:`, err);
         }

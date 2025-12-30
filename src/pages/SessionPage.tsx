@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -54,6 +54,28 @@ export default function SessionPage() {
     loadRaceCourses();
   }, [id]);
 
+  // Memoize expensive calculations
+  const stats = useMemo(() => {
+    if (!session || points.length === 0) return null;
+    return calculateStats(points, session.start_ts, session.end_ts);
+  }, [points, session?.start_ts, session?.end_ts]);
+
+  const trackCoordinates = useMemo(() => {
+    return points.map(p => [p.lat, p.lon] as [number, number]);
+  }, [points]);
+
+  const center = useMemo((): [number, number] => {
+    return points.length > 0 ? [points[0].lat, points[0].lon] : [0, 0];
+  }, [points]);
+
+  const speedData = useMemo(() => {
+    return points.map((p, idx) => ({
+      index: idx,
+      speed: Math.round(p.sog * 10) / 10,
+      time: format(new Date(p.ts), 'HH:mm:ss'),
+    }));
+  }, [points]);
+
   const loadSession = async () => {
     try {
       setLoading(true);
@@ -68,7 +90,6 @@ export default function SessionPage() {
         if (pointsErr?.response?.status === 404) {
           // Session exists but has no points yet
           setPoints([]);
-          console.log('Session has no track points yet');
         } else {
           throw pointsErr;
         }
@@ -117,21 +138,6 @@ export default function SessionPage() {
       </div>
     );
   }
-
-  const stats = points.length > 0 ? calculateStats(points, session.start_ts, session.end_ts) : null;
-
-  // Prepare map data
-  const trackCoordinates: [number, number][] = points.map(p => [p.lat, p.lon]);
-  const center: [number, number] = points.length > 0
-    ? [points[0].lat, points[0].lon]
-    : [0, 0];
-
-  // Prepare chart data
-  const speedData = points.map((p, idx) => ({
-    index: idx,
-    speed: Math.round(p.sog * 10) / 10,
-    time: format(new Date(p.ts), 'HH:mm:ss'),
-  }));
 
   return (
     <div>

@@ -2,6 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getPlans, getSubscriptionStatus, createCheckoutSession, cancelSubscription } from '../api';
 import type { SubscriptionPlan, SubscriptionStatus } from '../api';
+import ConfirmModal from '../components/ConfirmModal';
+
+interface ModalState {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  variant: 'danger' | 'warning' | 'info' | 'success';
+  showCancel: boolean;
+  onConfirm: () => void;
+}
 
 export default function SubscriptionPage() {
   const [plans, setPlans] = useState<Record<string, SubscriptionPlan>>({});
@@ -9,6 +19,27 @@ export default function SubscriptionPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [modal, setModal] = useState<ModalState>({
+    isOpen: false,
+    title: '',
+    message: '',
+    variant: 'info',
+    showCancel: false,
+    onConfirm: () => {},
+  });
+
+  const closeModal = () => setModal(prev => ({ ...prev, isOpen: false }));
+
+  const showAlert = (title: string, message: string, variant: ModalState['variant'] = 'info') => {
+    setModal({
+      isOpen: true,
+      title,
+      message,
+      variant,
+      showCancel: false,
+      onConfirm: closeModal,
+    });
+  };
 
   useEffect(() => {
     loadData();
@@ -43,27 +74,33 @@ export default function SubscriptionPage() {
       window.location.href = checkout_url;
     } catch (err: any) {
       console.error('Failed to create checkout session:', err);
-      alert(err.response?.data?.detail || 'Failed to start subscription process');
+      showAlert('Subscription Error', err.response?.data?.detail || 'Failed to start subscription process', 'danger');
       setProcessing(false);
     }
   };
 
-  const handleCancelSubscription = async () => {
-    if (!confirm('Are you sure you want to cancel your subscription? You will lose access at the end of your billing period.')) {
-      return;
-    }
-
-    try {
-      setProcessing(true);
-      await cancelSubscription();
-      alert('Subscription will be cancelled at the end of your billing period');
-      await loadData();
-    } catch (err: any) {
-      console.error('Failed to cancel subscription:', err);
-      alert(err.response?.data?.detail || 'Failed to cancel subscription');
-    } finally {
-      setProcessing(false);
-    }
+  const handleCancelSubscription = () => {
+    setModal({
+      isOpen: true,
+      title: 'Cancel Subscription?',
+      message: 'Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your billing period.',
+      variant: 'danger',
+      showCancel: true,
+      onConfirm: async () => {
+        closeModal();
+        try {
+          setProcessing(true);
+          await cancelSubscription();
+          showAlert('Subscription Cancelled', 'Your subscription will be cancelled at the end of your billing period.', 'success');
+          await loadData();
+        } catch (err: any) {
+          console.error('Failed to cancel subscription:', err);
+          showAlert('Cancellation Error', err.response?.data?.detail || 'Failed to cancel subscription', 'danger');
+        } finally {
+          setProcessing(false);
+        }
+      },
+    });
   };
 
   if (loading) {
@@ -273,6 +310,17 @@ export default function SubscriptionPage() {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        isOpen={modal.isOpen}
+        title={modal.title}
+        message={modal.message}
+        variant={modal.variant}
+        showCancel={modal.showCancel}
+        onConfirm={modal.onConfirm}
+        onCancel={closeModal}
+      />
     </div>
   );
 }

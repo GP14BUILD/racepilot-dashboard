@@ -17,6 +17,13 @@ interface WindVisualizationProps {
   opacity?: number;
 }
 
+// Escape HTML to prevent XSS
+function escapeHtml(str: string): string {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 export default function WindVisualization({
   windData,
   showArrows = true,
@@ -43,13 +50,17 @@ export default function WindVisualization({
           }),
         });
 
-        // Add popup with wind details
+        // Add popup with wind details (numeric values are safe, timestamp is escaped)
+        const speedStr = wind.speed.toFixed(1);
+        const directionStr = wind.direction.toFixed(0);
+        const timestampStr = wind.timestamp ? escapeHtml(new Date(wind.timestamp).toLocaleString()) : '';
+
         arrow.bindPopup(`
           <div style="padding: 8px;">
             <h4 style="margin: 0 0 8px 0;">Wind Data</h4>
-            <p style="margin: 4px 0;"><strong>Speed:</strong> ${wind.speed.toFixed(1)} kn</p>
-            <p style="margin: 4px 0;"><strong>Direction:</strong> ${wind.direction.toFixed(0)}°</p>
-            ${wind.timestamp ? `<p style="margin: 4px 0; font-size: 11px; color: #666;">${new Date(wind.timestamp).toLocaleString()}</p>` : ''}
+            <p style="margin: 4px 0;"><strong>Speed:</strong> ${speedStr} kn</p>
+            <p style="margin: 4px 0;"><strong>Direction:</strong> ${directionStr}°</p>
+            ${timestampStr ? `<p style="margin: 4px 0; font-size: 11px; color: #666;">${timestampStr}</p>` : ''}
           </div>
         `);
 

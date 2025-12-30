@@ -15,6 +15,8 @@ interface AdminUser {
   is_active: boolean;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
+
 export default function AdminPage() {
   const { user } = useAuth();
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -31,7 +33,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('auth_token');
-      const response = await fetch('https://api.race-pilot.app/auth/admin/users', {
+      const response = await fetch(`${API_URL}/auth/admin/users`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

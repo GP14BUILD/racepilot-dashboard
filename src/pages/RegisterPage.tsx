@@ -19,7 +19,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
-  const API_URL = 'https://api.race-pilot.app';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
 
   // Handle Google Sign-in response - show club code modal
   const handleGoogleSignIn = async (response: any) => {
@@ -73,7 +73,7 @@ export default function RegisterPage() {
     if (typeof window === 'undefined' || !window.google) return;
 
     window.google.accounts.id.initialize({
-      client_id: '48572885130-9pofupt5pdodpr9kam3mt9f13eqvo53v.apps.googleusercontent.com',
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || '48572885130-9pofupt5pdodpr9kam3mt9f13eqvo53v.apps.googleusercontent.com',
       callback: handleGoogleSignIn,
     });
 

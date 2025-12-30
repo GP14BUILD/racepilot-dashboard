@@ -19,7 +19,7 @@ interface Challenge {
   can_attempt: boolean;
 }
 
-const API_URL = 'https://racepilot-backend-production.up.railway.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.race-pilot.app';
 
 export default function ChallengesPage() {
   const { user, token } = useAuth();
