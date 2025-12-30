@@ -200,7 +200,7 @@ export default function SubscriptionPage() {
               <div className={`text-3xl mb-2 ${subscriptionStatus.features.ai_coaching ? 'text-green-400' : 'text-slate-600'}`}>
                 {subscriptionStatus.features.ai_coaching ? '✅' : '🔒'}
               </div>
-              <div className="text-sm text-slate-400">AI Coaching</div>
+              <div className="text-sm text-slate-400">Smart Coaching</div>
             </div>
             <div className="text-center">
               <div className={`text-3xl mb-2 ${subscriptionStatus.features.fleet_replay ? 'text-green-400' : 'text-slate-600'}`}>
@@ -243,7 +243,7 @@ export default function SubscriptionPage() {
                   </li>
                   <li className="flex items-center text-sm">
                     <span className="text-green-400 mr-2">✓</span>
-                    AI coaching insights
+                    Intelligent coaching insights
                   </li>
                   <li className="flex items-center text-sm">
                     <span className="text-green-400 mr-2">✓</span>
