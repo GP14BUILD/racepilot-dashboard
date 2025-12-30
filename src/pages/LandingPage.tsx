@@ -58,12 +58,15 @@ export default function LandingPage() {
           </Link>
 
           <nav style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-            <Link to="/features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+            <a href="#features" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               Features
-            </Link>
-            <Link to="/shop" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
-              Shop
-            </Link>
+            </a>
+            <a href="#packages" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+              Packages
+            </a>
+            <a href="#security" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
+              Security
+            </a>
             <Link to="/faq" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '15px', fontWeight: '500' }}>
               FAQ
             </Link>
@@ -756,6 +759,154 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
+      </section>
+
+      {/* Privacy & Security Section */}
+      <section id="security" style={{
+        maxWidth: '1100px',
+        margin: '0 auto',
+        padding: '80px 24px'
+      }}>
+        <h2 style={{
+          fontSize: '42px',
+          fontWeight: '800',
+          marginBottom: '16px',
+          textAlign: 'center',
+          background: 'linear-gradient(to right, #ffffff, #4ade80)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent'
+        }}>
+          Your Data, Protected
+        </h2>
+        <p style={{
+          fontSize: '18px',
+          color: '#94a3b8',
+          textAlign: 'center',
+          marginBottom: '48px',
+          maxWidth: '700px',
+          margin: '0 auto 48px'
+        }}>
+          Your GPS tracks reveal where you sail, how fast you go, and your competitive strategies.
+          We've built enterprise-grade security into every layer of RacePilot.
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '24px'
+        }}>
+          {/* Authenticated Access */}
+          <div style={{
+            padding: '24px',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '16px',
+            borderLeft: '4px solid #22c55e'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '12px' }}>🔐</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#4ade80' }}>
+              Authenticated Access
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '15px' }}>
+              Every API request requires secure JWT authentication. Only you and your authorized coaches
+              can access your sailing data. Session data is tied to your account and never shared publicly.
+            </p>
+          </div>
+
+          {/* Encrypted Transit */}
+          <div style={{
+            padding: '24px',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '16px',
+            borderLeft: '4px solid #22c55e'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '12px' }}>🛡️</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#4ade80' }}>
+              Encrypted Data Transit
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '15px' }}>
+              All data transmission uses HTTPS/TLS encryption. Your GPS tracks, wind readings, and
+              performance data are encrypted in transit between your phone, our servers, and the dashboard.
+            </p>
+          </div>
+
+          {/* Offline-First */}
+          <div style={{
+            padding: '24px',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '16px',
+            borderLeft: '4px solid #22c55e'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '12px' }}>📱</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#4ade80' }}>
+              Offline-First Design
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '15px' }}>
+              Your sailing data is stored securely on your device first. If you lose connection on the water,
+              data is saved locally and uploaded when you're back online. You control when data leaves your phone.
+            </p>
+          </div>
+
+          {/* You Own Your Data */}
+          <div style={{
+            padding: '24px',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '16px',
+            borderLeft: '4px solid #22c55e'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '12px' }}>👤</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#4ade80' }}>
+              You Own Your Data
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '15px' }}>
+              You decide when tracking starts and stops. Your sessions can be deleted at any time.
+              No third-party analytics or advertising trackers. We don't sell or share your location history.
+            </p>
+          </div>
+
+          {/* Secure Infrastructure */}
+          <div style={{
+            padding: '24px',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '16px',
+            borderLeft: '4px solid #22c55e'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '12px' }}>🏢</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#4ade80' }}>
+              Secure Infrastructure
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '15px' }}>
+              RacePilot runs on enterprise cloud infrastructure with automatic backups, restricted API access,
+              and regular security updates. Premium features require an active subscription.
+            </p>
+          </div>
+
+          {/* GDPR Compliant */}
+          <div style={{
+            padding: '24px',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '16px',
+            borderLeft: '4px solid #22c55e'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '12px' }}>🇪🇺</div>
+            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', color: '#4ade80' }}>
+              Privacy Rights
+            </h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', fontSize: '15px' }}>
+              Full GDPR compliance. Request a copy of your data, delete your account, or export your sessions
+              at any time. Your performance data deserves the same protection as personal information.
+            </p>
+          </div>
+        </div>
+
+        <p style={{
+          textAlign: 'center',
+          marginTop: '40px',
+          color: '#94a3b8',
+          fontSize: '16px',
+          fontStyle: 'italic'
+        }}>
+          Built with the same security standards used by professional sports analytics platforms.
+        </p>
       </section>
 
       {/* CTA Section */}
