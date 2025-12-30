@@ -1,8 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface VideoUploadProps {
   sessionId: number;
   onUploadComplete?: () => void;
+}
+
+interface Video {
+  id: number;
+  session_id: number;
+  filename: string;
+  file_size: number;
+  title?: string;
+  created_at: string;
 }
 
 const API_URL = 'https://racepilot-backend-production.up.railway.app';
@@ -17,6 +26,53 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  // Existing videos
+  const [myVideos, setMyVideos] = useState<Video[]>([]);
+  const [sessionVideos, setSessionVideos] = useState<Video[]>([]);
+  const [showMyVideos, setShowMyVideos] = useState(false);
+  const [loadingVideos, setLoadingVideos] = useState(false);
+
+  // Load user's videos and session videos
+  useEffect(() => {
+    loadSessionVideos();
+    if (showMyVideos) {
+      loadMyVideos();
+    }
+  }, [sessionId, showMyVideos]);
+
+  const loadSessionVideos = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/videos/session/${sessionId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setSessionVideos(data);
+      }
+    } catch (err) {
+      console.error('Failed to load session videos:', err);
+    }
+  };
+
+  const loadMyVideos = async () => {
+    setLoadingVideos(true);
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_URL}/videos/`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setMyVideos(data);
+      }
+    } catch (err) {
+      console.error('Failed to load my videos:', err);
+    } finally {
+      setLoadingVideos(false);
+    }
+  };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -77,6 +133,7 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
           setOffsetSeconds(0);
           setIsPublic(false);
           setProgress(0);
+          loadSessionVideos(); // Refresh session videos
           if (onUploadComplete) onUploadComplete();
         } else {
           setError(`Upload failed: ${xhr.responseText}`);
@@ -98,111 +155,188 @@ export default function VideoUpload({ sessionId, onUploadComplete }: VideoUpload
     }
   };
 
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
   return (
     <div style={styles.container}>
-      <h3 style={styles.title}>Upload Race Video</h3>
+      <h3 style={styles.title}>Race Videos</h3>
 
-      {/* File Select */}
-      <div style={styles.fileSelect}>
-        <input
-          type="file"
-          accept="video/mp4,video/quicktime,video/webm,video/x-msvideo"
-          onChange={handleFileSelect}
-          style={styles.fileInput}
-          id="video-upload"
-          disabled={uploading}
-        />
-        <label htmlFor="video-upload" style={styles.fileLabel}>
-          {file ? file.name : 'Choose video file (MP4, MOV, WebM, AVI - max 500MB)'}
-        </label>
-      </div>
-
-      {file && (
-        <>
-          {/* Metadata */}
-          <div style={styles.form}>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Title (optional)</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g., Race 3 - Championship Series"
-                style={styles.input}
-                disabled={uploading}
-              />
-            </div>
-
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Description (optional)</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Add notes about this video..."
-                style={styles.textarea}
-                rows={3}
-                disabled={uploading}
-              />
-            </div>
-
-            <div style={styles.formGroup}>
-              <label style={styles.label}>
-                Time Offset (seconds)
-                <span style={styles.hint}>Adjust video sync with GPS data</span>
-              </label>
-              <input
-                type="number"
-                value={offsetSeconds}
-                onChange={(e) => setOffsetSeconds(parseFloat(e.target.value))}
-                step={0.1}
-                style={styles.input}
-                disabled={uploading}
-              />
-            </div>
-
-            <div style={styles.checkboxGroup}>
-              <input
-                type="checkbox"
-                id="is-public"
-                checked={isPublic}
-                onChange={(e) => setIsPublic(e.target.checked)}
-                disabled={uploading}
-              />
-              <label htmlFor="is-public" style={styles.checkboxLabel}>
-                Make this video public (visible to others)
-              </label>
-            </div>
+      {/* Current Session Videos */}
+      {sessionVideos.length > 0 && (
+        <div style={styles.section}>
+          <h4 style={styles.sectionTitle}>Videos for this session:</h4>
+          <div style={styles.videoList}>
+            {sessionVideos.map(video => (
+              <div key={video.id} style={styles.videoItem}>
+                <div style={styles.videoIcon}>🎥</div>
+                <div style={styles.videoInfo}>
+                  <div style={styles.videoName}>
+                    {video.title || video.filename}
+                  </div>
+                  <div style={styles.videoMeta}>
+                    {formatFileSize(video.file_size)} • {formatDate(video.created_at)}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-
-          {/* Upload Button */}
-          <button
-            onClick={handleUpload}
-            disabled={uploading}
-            style={{
-              ...styles.uploadButton,
-              opacity: uploading ? 0.6 : 1,
-              cursor: uploading ? 'not-allowed' : 'pointer',
-            }}
-          >
-            {uploading ? `Uploading... ${Math.round(progress)}%` : 'Upload Video'}
-          </button>
-
-          {/* Progress Bar */}
-          {uploading && (
-            <div style={styles.progressBar}>
-              <div style={{ ...styles.progressFill, width: `${progress}%` }} />
-            </div>
-          )}
-        </>
-      )}
-
-      {/* Messages */}
-      {error && <div style={styles.error}>{error}</div>}
-      {success && (
-        <div style={styles.success}>
-          Video uploaded successfully! It may take a moment to process.
         </div>
       )}
+
+      {/* Toggle to show my videos */}
+      <button
+        onClick={() => setShowMyVideos(!showMyVideos)}
+        style={styles.toggleButton}
+      >
+        {showMyVideos ? '− Hide' : '+ Show'} My Video Library ({myVideos.length} videos)
+      </button>
+
+      {/* My Videos Library */}
+      {showMyVideos && (
+        <div style={styles.section}>
+          {loadingVideos ? (
+            <div style={styles.loading}>Loading your videos...</div>
+          ) : myVideos.length === 0 ? (
+            <div style={styles.emptyState}>No videos uploaded yet</div>
+          ) : (
+            <div style={styles.videoList}>
+              {myVideos.map(video => (
+                <div key={video.id} style={styles.videoItem}>
+                  <div style={styles.videoIcon}>
+                    {video.session_id === sessionId ? '📹' : '🎥'}
+                  </div>
+                  <div style={styles.videoInfo}>
+                    <div style={styles.videoName}>
+                      {video.title || video.filename}
+                    </div>
+                    <div style={styles.videoMeta}>
+                      Session {video.session_id} • {formatFileSize(video.file_size)} • {formatDate(video.created_at)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Upload New Video */}
+      <div style={styles.uploadSection}>
+        <h4 style={styles.sectionTitle}>Upload New Video</h4>
+
+        {/* File Select */}
+        <div style={styles.fileSelect}>
+          <input
+            type="file"
+            accept="video/mp4,video/quicktime,video/webm,video/x-msvideo"
+            onChange={handleFileSelect}
+            style={styles.fileInput}
+            id="video-upload"
+            disabled={uploading}
+          />
+          <label htmlFor="video-upload" style={styles.fileLabel}>
+            {file ? file.name : 'Choose video file (MP4, MOV, WebM, AVI - max 500MB)'}
+          </label>
+        </div>
+
+        {file && (
+          <>
+            {/* Metadata */}
+            <div style={styles.form}>
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Title (optional)</label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g., Race 3 - Championship Series"
+                  style={styles.input}
+                  disabled={uploading}
+                />
+              </div>
+
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Description (optional)</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Add notes about this video..."
+                  style={styles.textarea}
+                  rows={3}
+                  disabled={uploading}
+                />
+              </div>
+
+              <div style={styles.formGroup}>
+                <label style={styles.label}>
+                  Time Offset (seconds)
+                  <span style={styles.hint}>Adjust video sync with GPS data</span>
+                </label>
+                <input
+                  type="number"
+                  value={offsetSeconds}
+                  onChange={(e) => setOffsetSeconds(parseFloat(e.target.value))}
+                  step={0.1}
+                  style={styles.input}
+                  disabled={uploading}
+                />
+              </div>
+
+              <div style={styles.checkboxGroup}>
+                <input
+                  type="checkbox"
+                  id="is-public"
+                  checked={isPublic}
+                  onChange={(e) => setIsPublic(e.target.checked)}
+                  disabled={uploading}
+                />
+                <label htmlFor="is-public" style={styles.checkboxLabel}>
+                  Make this video public (visible to others)
+                </label>
+              </div>
+            </div>
+
+            {/* Upload Button */}
+            <button
+              onClick={handleUpload}
+              disabled={uploading}
+              style={{
+                ...styles.uploadButton,
+                opacity: uploading ? 0.6 : 1,
+                cursor: uploading ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {uploading ? `Uploading... ${Math.round(progress)}%` : 'Upload Video'}
+            </button>
+
+            {/* Progress Bar */}
+            {uploading && (
+              <div style={styles.progressBar}>
+                <div style={{ ...styles.progressFill, width: `${progress}%` }} />
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Messages */}
+        {error && <div style={styles.error}>{error}</div>}
+        {success && (
+          <div style={styles.success}>
+            Video uploaded successfully! It may take a moment to process.
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -219,6 +353,79 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 'bold',
     color: '#333',
     marginBottom: '20px',
+  },
+  section: {
+    marginBottom: '24px',
+    padding: '16px',
+    backgroundColor: '#f9fafb',
+    borderRadius: '8px',
+  },
+  sectionTitle: {
+    fontSize: '16px',
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: '12px',
+  },
+  videoList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  videoItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '12px',
+    backgroundColor: 'white',
+    borderRadius: '6px',
+    border: '1px solid #e5e7eb',
+  },
+  videoIcon: {
+    fontSize: '24px',
+  },
+  videoInfo: {
+    flex: 1,
+    minWidth: 0,
+  },
+  videoName: {
+    fontSize: '14px',
+    fontWeight: '500',
+    color: '#333',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  videoMeta: {
+    fontSize: '12px',
+    color: '#6b7280',
+    marginTop: '2px',
+  },
+  toggleButton: {
+    width: '100%',
+    padding: '12px',
+    backgroundColor: '#f3f4f6',
+    color: '#374151',
+    border: '1px solid #d1d5db',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    marginBottom: '16px',
+  },
+  loading: {
+    textAlign: 'center',
+    padding: '24px',
+    color: '#6b7280',
+    fontSize: '14px',
+  },
+  emptyState: {
+    textAlign: 'center',
+    padding: '24px',
+    color: '#9ca3af',
+    fontSize: '14px',
+  },
+  uploadSection: {
+    marginTop: '16px',
   },
   fileSelect: {
     marginBottom: '20px',
